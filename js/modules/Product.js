@@ -1,4 +1,4 @@
-import CommonMethods from "./CommonMethods";
+import CommonMethods from './CommonMethods.js';
 
 export default class Product extends CommonMethods {
 	constructor(options) {

@@ -1,8 +1,9 @@
-import CommonMethods from "./modules/CommonMethods";
-import ProductList from "./modules/ProductList";
-import ProductListConteiner from "./modules/ProductListConteiner";
+import CommonMethods from './CommonMethods.js';
+import Product from './Product.js';
+import ProductList from './ProductList.js';
+import CartProduct from './CartProduct.js';
 
-class Cart extends CommonMethods {
+export default class Cart extends CommonMethods {
 	constructor (options) {
 		super();
 		Object.defineProperties(this, {
@@ -67,47 +68,3 @@ class Cart extends CommonMethods {
 		}
 	}
 }
-
-class CartProduct extends CommonMethods {
-	constructor (options) {
-		super();
-		Object.defineProperties(this, {
-			'position': {
-				value: ProductList.newProperty(options, 'position', 0, 'number'),
-				configurable: false,
-				enumerable: true,
-				writable: true
-			},
-
-			'product': {
-				value: ProductList.newProperty(options, 'product', undefined, 'object'),
-				configurable: false,
-				enumerable: true,
-				writable: true
-			},
-
-			'number': {
-				value: ProductList.newProperty(options, 'number', 1, 'number'),
-				configurable: false,
-				enumerable: true,
-				writable: true
-			},
-
-			'cost': {
-				enumerable: true,
-				get: function () {
-					if (this.product){
-						return this.product.price * this.number
-					}
-					return 0
-				}
-			}
-		})
-	}
-}
-
-const plc = new ProductListConteiner();
-
-const cart = new Cart({
-	name: 'mainCart'
-});

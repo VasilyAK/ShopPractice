@@ -1,5 +1,6 @@
-import CommonMethods from "./CommonMethods";
-import Product from "./Product";
+import CommonMethods from './CommonMethods.js';
+import Product from './Product.js';
+import Cart from './Cart.js';
 
 export default class ProductList extends CommonMethods{
 	constructor (options) {
@@ -120,25 +121,28 @@ export default class ProductList extends CommonMethods{
 			}
 		});
 
+		/*
+		ПОПРОБОВАТЬ ПЕРЕДЕЛАТЬ УДАЛЕНИЕ НЕ ВСЕГО БЛОКА, А КАЖДОГО ПОДБЛОКА ПО ОТДЕЛЬНОСТИ, ЧТОБЫ КАРТИНКА НЕ ПРЫГАЛА, ИЛИ ВООБЩЕ ДОБАВИТЬ АНИМАЦИЮ ПЕРЕХОДОВ
+		 */
 		let whereChild;
-		for (let i = 0; i < where.childNodes.length; i++){ // удаляем предудыщую отрисовку, если такая есть
-			if (where.childNodes[i].nodeType === 1 && where.childNodes[i].getAttribute('id') === id){
+		for (let i = 0; i < where.childNodes.length; i++) { // удаляем предудыщую отрисовку, если такая есть
+			if (where.childNodes[i].nodeType === 1 && where.childNodes[i].getAttribute('id') === id) {
 				where.removeChild(where.childNodes[i]);
 			}
-			if (where.childNodes[i].nodeType === 1 && where.childNodes[i].getAttribute('id') === `${id}-nav`){
+			if (where.childNodes[i].nodeType === 1 && where.childNodes[i].getAttribute('id') === `${id}-nav`) {
 				where.removeChild(where.childNodes[i]);
-				if (where.childNodes[i] && where.childNodes[i].nodeType === 1){
+				if (where.childNodes[i] && where.childNodes[i].nodeType === 1) {
 					whereChild = where.childNodes[i];
 					break;
 				}
 			}
 		}
-		if (whereChild){
+		if (whereChild) {
 			where.insertBefore(mainProductList, whereChild);
-			where.insertBefore(this.creatNav(id, this.page-2, this.page+2, this.page, where, cart), whereChild);
+			where.insertBefore(this.creatNav(id, this.page - 2, this.page + 2, this.page, where, cart), whereChild);
 		} else {
 			where.appendChild(mainProductList);
-			where.appendChild(this.creatNav(id, this.page-2, this.page+2, this.page, where, cart));
+			where.appendChild(this.creatNav(id, this.page - 2, this.page + 2, this.page, where, cart));
 		}
 	}
 

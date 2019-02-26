@@ -1,3 +1,8 @@
+import {plc} from './shopEngine.js';
+import {cc} from './shopEngine.js';
+import ProductList from './modules/ProductList.js';
+import Cart from './modules/Cart.js';
+
 const main1 = new Vue ({
 	el: '#main1',
 	data: {
@@ -6,6 +11,9 @@ const main1 = new Vue ({
 	mounted() {
 		const firstProductList = plc.createProductList(new ProductList({
 			name:'firstProductList1'
+		}));
+		const cart = cc.createCart(new Cart ({
+			name: 'mainCart'
 		}));
 		/*
 			@ url - откуда будем делать запрос
@@ -18,7 +26,7 @@ const main1 = new Vue ({
 			все параметры обязательны
 		*/
 		firstProductList.createPage ({
-			url: 'shop.json',
+			url: 'json/shop.json',
 			where: document.querySelector('#main1'),
 			id: 'main__products-list1',
 			cart: cart,
@@ -38,9 +46,12 @@ const main2 = new Vue ({
 		const firstProductList2 = plc.createProductList(new ProductList({
 			name:'firstProductList2'
 		}));
+		const cart = cc.createCart(new Cart ({
+			name: 'mainCart'
+		}));
 
 		firstProductList2.createPage ({
-			url: 'shop.json',
+			url: 'json/shop.json',
 			where: document.querySelector('#main2'),
 			id: 'main__products-list2',
 			cart: cart,
@@ -60,9 +71,12 @@ const main3 = new Vue ({
 		const firstProductList3 = plc.createProductList(new ProductList({
 			name:'firstProductList3'
 		}));
+		const cart = cc.createCart(new Cart ({
+			name: 'mainCart'
+		}));
 
 		firstProductList3.createPage ({
-			url: 'shop.json',
+			url: 'json/shop.json',
 			where: document.querySelector('#main3'),
 			id: 'main__products-list3',
 			cart: cart,

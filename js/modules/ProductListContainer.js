@@ -1,12 +1,12 @@
-import CommonMethods from "./CommonMethods";
-import ProductList from "./ProductList";
+import CommonMethods from './CommonMethods.js';
+import ProductList from './ProductList.js';
 
-export default class ProductListConteiner extends CommonMethods { // содержит все созданные productLists
+export default class ProductListContainer extends CommonMethods { // содержит все созданные productLists
 	constructor (options) {
 		super();
 		Object.defineProperties(this, {
 			'name': {
-				value: ProductList.newProperty(options, 'name', 'productListsBlock'),
+				value: ProductList.newProperty(options, 'name', 'productListsContainer'),
 				configurable: false,
 				enumerable: true,
 				writable: false
