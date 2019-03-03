@@ -6,7 +6,7 @@ export default class CartContainer extends CommonMethods { // содержит �
 		super();
 		Object.defineProperties(this, {
 			'name': {
-				value: CartContainer.newProperty(options, 'name', 'cartContainer'),
+				value: CartContainer.newProperty(options, 'name', 'cartContainer', 'string'),
 				configurable: false,
 				enumerable: true,
 				writable: false
@@ -16,6 +16,7 @@ export default class CartContainer extends CommonMethods { // содержит �
 				value: CartContainer.newProperty(options, 'item', [], 'object'),
 				configurable: false,
 				enumerable: true,
+				writable: true
 			}
 		})
 	}
@@ -30,7 +31,6 @@ export default class CartContainer extends CommonMethods { // содержит �
 					}
 				}
 				this.item.push(cart);
-				Object.preventExtensions(cart); // запрещаем добавлять новые элементы
 				return this.item[this.item.length-1]; //функция возвращает новый созданный объект
 			} else {
 				throw new Error (`New object must have property "name"`)

@@ -1,8 +1,12 @@
-import CommonMethods from './modules/CommonMethods.js';
-import ProductList from './modules/ProductList.js';
 import ProductListContainer from './modules/ProductListContainer.js';
 import CartContainer from './modules/CartContainer.js';
+import SearchContainer from './modules/SearchContainer.js';
+import ShopContainer from './modules/ShopContainer.js';
 
-export const cc = new CartContainer();
-
-export const plc = new ProductListContainer();
+// Shop Maker
+export const SM = {
+plc: new ProductListContainer(),
+cc: new CartContainer(),
+sc: new SearchContainer(),
+shc: new ShopContainer()
+};

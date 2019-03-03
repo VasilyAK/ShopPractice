@@ -6,16 +6,17 @@ export default class ProductListContainer extends CommonMethods { // содер�
 		super();
 		Object.defineProperties(this, {
 			'name': {
-				value: ProductList.newProperty(options, 'name', 'productListsContainer'),
+				value: ProductList.newProperty(options, 'name', 'productListsContainer', 'string'),
 				configurable: false,
 				enumerable: true,
 				writable: false
 			},
 
-			'item': {
+			'items': {
 				value: ProductList.newProperty(options, 'item', [], 'object'),
 				configurable: false,
 				enumerable: true,
+				writable: true
 			}
 		})
 	}
@@ -23,15 +24,15 @@ export default class ProductListContainer extends CommonMethods { // содер�
 	createProductList (productList) {
 		if (productList instanceof ProductList) {
 			if (productList.name) {
-				for (let i in this.item) {
-					if (this.item.name === productList.name) {
+				for (let i in this.items) {
+					if (this.items.name === productList.name) {
 						console.log(new Error (`${productList.name} is already in ${this.name}`));
 						return;
 					}
 				}
-				this.item.push(productList);
+				this.items.push(productList);
 				Object.preventExtensions(productList); // запрещаем добавлять новые элементы
-				return this.item[this.item.length-1]; //функция возвращает новый созданный объект
+				return this.items[this.items.length-1]; //функция возвращает новый созданный объект
 			} else {
 				throw new Error (`New object must have property "name"`)
 			}

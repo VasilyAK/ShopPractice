@@ -5,8 +5,8 @@ export default class CartProduct extends CommonMethods {
 	constructor (options) {
 		super();
 		Object.defineProperties(this, {
-			'position': {
-				value: ProductList.newProperty(options, 'position', 0, 'number'),
+			'id': {
+				value: ProductList.newProperty(options, 'id', 0, 'number'),
 				configurable: false,
 				enumerable: true,
 				writable: true
@@ -19,21 +19,11 @@ export default class CartProduct extends CommonMethods {
 				writable: true
 			},
 
-			'number': {
-				value: ProductList.newProperty(options, 'number', 1, 'number'),
+			'quantity': {
+				value: ProductList.newProperty(options, 'quantity', 1, 'number'),
 				configurable: false,
 				enumerable: true,
 				writable: true
-			},
-
-			'cost': {
-				enumerable: true,
-				get: function () {
-					if (this.product){
-						return this.product.price * this.number
-					}
-					return 0
-				}
 			}
 		})
 	}

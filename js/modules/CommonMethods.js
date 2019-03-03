@@ -1,15 +1,49 @@
 export default class CommonMethods {
-	static newProperty (options, property, returnDefault, type) { //обрабатывает свойства классов
-		if (options && options[property]){
-			if (type && typeof options[property] !== type){
-				throw new Error(`Type of ${options[property]} is not ${type}`)
+	static newProperty (options, property, returnDefault, type, addVerification) { //обрабатывает свойства классов
+		if (options) {
+			if (options[property]) {
+				if (type && typeof options[property] !== type) {
+					throw new Error(`Type of ${options[property]} is not ${type}`)
+				}
+				if (addVerification && typeof addVerification === 'function'){
+					return addVerification(options[property], options['name'])
+				} else {
+					return options[property]
+				}
 			}
-			return options[property]
 		}
 		if (returnDefault instanceof Error){
 			throw returnDefault
 		} else {
 			return returnDefault
+		}
+	}
+
+	static checkWhere (where, name) {
+		try {
+			if (!(where instanceof Node && isNodeOfBody(where))){
+				throw new Error(`${name} error: 'where' is not a node of Body. The document must have block to insert "main__products-list`)
+			} else {
+				return where;
+			}
+		} catch (e) {
+			throw new Error(`${e.message}. 'where' is a required parameter`);
+		}
+
+		function isNodeOfBody(where){
+			if (where.nodeName === 'BODY'){
+				return true
+			} else {
+				if (where.parentNode){
+					if (where.parentNode.nodeName === 'BODY'){
+						return true
+					} else {
+						return isNodeOfBody(where.parentNode)
+					}
+				} else {
+					return false;
+				}
+			}
 		}
 	}
 
