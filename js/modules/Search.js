@@ -1,6 +1,6 @@
 import CommonMethods from './CommonMethods.js';
 import ProductList from "./ProductList.js";
-import {shc} from '../shopEngine.js';
+import {SM} from '../shopEngine.js';
 
 export default class Search extends CommonMethods {
 	constructor (options) {
@@ -92,10 +92,10 @@ export default class Search extends CommonMethods {
 	search () {
 		this.map = [];
 		this.setText(this.input.value);
-		for (let i in shc.items){
-			if (shc.items.hasOwnProperty(i)) {
-				if (shc.items[i].search.name === this.name) {
-					this.ranging(shc.items[i].productList);
+		for (let i in SM.shc.items){
+			if (SM.shc.items.hasOwnProperty(i)) {
+				if (SM.shc.items[i].search.name === this.name) {
+					this.ranging(SM.shc.items[i].productList);
 				}
 			}
 		}

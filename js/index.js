@@ -1,15 +1,11 @@
 import {SM} from './shopEngine.js';
-import Shop from './modules/Shop.js';
-import ProductList from './modules/ProductList.js';
-import Cart from './modules/Cart.js';
-import Search from './modules/Search.js';
 
 /*
 	пока не проработал
 */
-const cart = SM.cc.createCart(new Cart ({
+const cart = SM.createCart({
 	name: 'mainCart'
-}));
+});
 
 /*
 	! @ name - имя нового списка товаров
@@ -20,11 +16,11 @@ const cart = SM.cc.createCart(new Cart ({
  */
 
 
-const search = SM.sc.createSearch(new Search({
+const search = SM.createSearch({
 	name: 'mainSearch',
 	input: document.querySelector('#main-search-input'),
 	button: document.querySelector('#main-search-button'),
-}));
+});
 
 const main1 = new Vue ({
 	el: '#main1',
@@ -39,7 +35,7 @@ const main1 = new Vue ({
 
 			! обязательный
 		 */
-		const productList1 = SM.plc.createProductList(new ProductList({
+		const productList1 = SM.createProductList({
 			name: 'productList1',
 			jsonDeclare: {
 				id: 'items.id_product',
@@ -49,7 +45,7 @@ const main1 = new Vue ({
 				type: 'type'
 			},
 			url: 'json/shop.json'
-		}));
+		});
 		/*
 			! @ url - откуда будем делать запрос
 			! @ where - куда будем рисовать
@@ -67,7 +63,7 @@ const main1 = new Vue ({
 
 			! обязательный
 		*/
-		const Shop1 = SM.shc.createShop (new Shop ({
+		const Shop1 = SM.createShop ({
 			name: 'shop1',
 			where: document.querySelector('#main1'),
 			whereId: 'main__product-list1',
@@ -103,7 +99,7 @@ const main1 = new Vue ({
 				item.appendChild(btnAdd);
 				return item;
 			}
-		}));
+		});
 	}
 });
 
@@ -114,7 +110,7 @@ const main2 = new Vue ({
 	},
 	mounted() {
 		// пример из методички
-		const productList2 = SM.plc.createProductList(new ProductList({
+		const productList2 = SM.createProductList({
 			name:'productList2',
 			jsonDeclare: {
 				id: 'id_product',
@@ -122,9 +118,9 @@ const main2 = new Vue ({
 				title: 'product_name'
 			},
 			url: 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json'
-		}));
+		});
 
-		const Shop2 = SM.shc.createShop (new Shop ({
+		const Shop2 = SM.createShop ({
 			name: 'shop2',
 			where: document.querySelector('#main2'),
 			whereId: 'main__product-list2',
@@ -160,7 +156,7 @@ const main2 = new Vue ({
 				item.appendChild(btnAdd);
 				return item;
 			}
-		}));
+		});
 	}
 });
 /*

@@ -3,7 +3,7 @@ import ProductList from './ProductList.js';
 import Cart from './Cart.js';
 import Search from './Search.js';
 import Product from './Product.js';
-import {shc} from '../shopEngine.js';
+import {SM} from '../shopEngine.js';
 
 export default class Shop extends CommonMethods {
 	constructor (options) {
@@ -332,8 +332,8 @@ export default class Shop extends CommonMethods {
 
 	static checkWhereId (whereId, name) {
 		try {
-			for (let i in shc){
-				if (shc[i].whereId === whereId) {
+			for (let i in SM.shc){
+				if (SM.shc[i].whereId === whereId) {
 					throw new Error (`${whereId} is already used`)
 				}
 			}
