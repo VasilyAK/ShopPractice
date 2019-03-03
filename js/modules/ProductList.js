@@ -49,7 +49,7 @@ export default class ProductList extends CommonMethods{
 		})
 	}
 
-	jsonDeclareParse (serverSource) {
+	jsonDeclareParse (serverSource) { // парсит иерархически выстроенные json
 		let gl; // Groupe Line
 		let us = []; // Unparsed Source
 		(function createUS (serverSource, jsonDeclare, pathValue) { // собирает в один массив все элемены из serverSource указанные в jsonDeclare,
@@ -61,10 +61,16 @@ export default class ProductList extends CommonMethods{
 						path.push(i);
 					}
 					if (typeof serverSource[i] === 'object') {
+						if (serverSource instanceof Array){
+							us.push(path.length);
+							if (!gl || gl < path.length){
+								gl = path.length;
+							}
+						}
 						createUS(serverSource[i], jsonDeclare, path);
 						if (serverSource instanceof Array){
 							us.push(path.length);
-							if (!gl || gl > path.length){
+							if (!gl || gl < path.length){
 								gl = path.length;
 							}
 						}
@@ -88,58 +94,74 @@ export default class ProductList extends CommonMethods{
 			}
 		})(serverSource, this.jsonDeclare, []);
 
-		let psci = 0; // Parsed Source Count Item
-		let ps = []; // Parsed Source
-		ps.push([]);
-		for (let i = 0; i < us.length; i++) { //собирает в массив группы, выделенные в предыдущей функции
-			if (typeof gl === 'number' && us[i] === gl && i !== us.length-1){
-				ps.push([]);
-				psci++;
-			} else {
-				if (typeof us[i] !== 'number') {
-					ps[psci].push(us[i])
+		// Parsed Source
+		const ps = (function createPS (us, ps) {
+			for (let i = 0; i < us.length; i++) { //собирает в массив группы, выделенные в предыдущей функции
+				if (typeof gl === 'number' && us[i] === gl && i !== us.length-1){
+					ps.push([]);
+					i++;
+					do {
+						ps[ps.length-1].push(us[i])
+					} while (us[++i] !== gl);
+				} else {
+					ps.push(us[i])
 				}
 			}
-		}
+			if (gl-- > 0) {
+				return createPS(ps, [])
+			} else {
+				return ps
+			}
+		})(us, []);
 
 		let fs = []; // Filtered Source
-		for (let i in ps) { // разбивает группы на подгруппы по соответствующим name
-			if (ps.hasOwnProperty(i)) {
-				fs[i] = [];
-				for (let j in this.jsonDeclare) {
-					if (this.jsonDeclare.hasOwnProperty(j)) {
-						fs[i].push(ps[i].filter((item) => {
-							return item.name === j;
-						}))
+		(function createFS (ps, fa) { // Filtered Source собирает из вложенных массивов заданные product
+			ps.forEach((val) => {
+				let count = 0;
+				for (let i = 0; i < val.length; i++){
+					if (!(val[i]['name'])) {
+						fa.push([]);
+						count++
 					}
 				}
-			}
-		}
 
-		let sci = 0; // Source Count Item
-		for (let i = 0; i < fs.length; i++) { // собирает из подгрупп объекты, указанные в jsonDeclare
-			let maxLenght = 0;
-			for (let j = 0; j < fs[i].length; j++){
-				if (fs[i][j].length > maxLenght) {
-					maxLenght = fs[i][j].length;
-				}
-			}
+				let pass = 0;
 
-			for (let k = 0; k < maxLenght; k++) {
-				this.source[sci+k] = {};
-				val: for (let val in this.jsonDeclare) {
-					if (this.jsonDeclare.hasOwnProperty(val)) {
-						for (let n = 0; n < fs[i].length; n++){
-							if (fs[i][n][k % (fs[i][n].length)]['name'] === val){
-								this.source[sci+k][val] = fs[i][n][k % (fs[i][n].length)]['value'];
-								continue val
+				circle1: for (let i = 0; i < fa.length; i++) {
+					let countPass = 0;
+					for (let j = 0; j < val.length; j++) {
+						if (!(val[j]['name'])) {
+							if (countPass === pass){
+								for (let k = 0; k < val[j].length; k++) {
+									fa[i].push(val[j][k]);
+								}
+								pass++;
+								continue circle1
+							} else {
+								countPass++
 							}
+						} else {
+							fa[i].push(val[j])
 						}
 					}
 				}
-			}
-			sci += maxLenght;
-		}
+
+				if (count > 0) {
+					createFS (fa, []);
+					fa = [];
+				} else {
+					fs.push(val)
+				}
+			})
+		})(ps, []);
+
+		fs.forEach((val) => { // преобразует fs в source (суть массивов одна, но разные представления)
+			let sourceObj = {};
+			val.forEach((obj) => {
+				sourceObj[obj.name] = obj.value
+			});
+			this.source.push(sourceObj)
+		});
 	}
 	/*
 	totalCost () {

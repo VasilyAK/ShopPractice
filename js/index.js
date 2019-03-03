@@ -14,8 +14,6 @@ const cart = SM.createCart({
 
 	! обязательный
  */
-
-
 const search = SM.createSearch({
 	name: 'mainSearch',
 	input: document.querySelector('#main-search-input'),
@@ -38,11 +36,17 @@ const main1 = new Vue ({
 		const productList1 = SM.createProductList({
 			name: 'productList1',
 			jsonDeclare: {
-				id: 'items.id_product',
-				price: 'items.price',
-				title: 'items.product_name',
-				image: 'items.image',
-				type: 'type'
+				product: 'product',
+				type: 'items.type',
+				producer: 'items.items.producer',
+				id: 'items.items.items.id_product',
+				price: 'items.items.items.price',
+				pci: 'items.items.items.pci',
+				ram: 'items.items.items.ram',
+				serial: 'items.items.items.serial',
+				equipment: 'items.items.items.equipment',
+				image: 'items.items.items.image',
+
 			},
 			url: 'json/shop.json'
 		});
@@ -86,7 +90,7 @@ const main1 = new Vue ({
 
 				const title = document.createElement('p');
 				title.setAttribute('class', 'main-products-list__item-title');
-				title.innerHTML = `${productBlock.title}</br>${productBlock.price} руб.`;
+				title.innerHTML = `id: ${productBlock.id}</br>product: ${productBlock.product}</br>type: ${productBlock.type}</br>serial: ${productBlock.serial}</br>price: ${productBlock.price}`;
 
 				const btnAdd = document.createElement('button');
 				btnAdd.setAttribute('class', 'main-products-list__item-btn-add product-btn');
