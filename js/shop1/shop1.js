@@ -45,62 +45,6 @@ const productList1 = SM.createProductList({
 	url: 'json/shop.json'
 });
 
-/* SM.createShop
-	! @ url - откуда будем делать запрос
-	! @ where - куда будем рисовать
-	! @ whereId - идентификатор для нарисованного дива
-	! @ productList - список всех товаров полученных из json
-	  @ cart - с какой корзиной нужно связать
-	  @ search - с каким поиском нужно связать
-	! @ pageNumber - какую страницу отрисовать
-	! @ productsOnPage - сколько товаров отрисовать на странице
-	! @ productsOnLine - сколько товаров отрисовать на строке
-
-	! @ productBlock - функция имеет обязательный параметр pp (Product Property), элементами которого являются свойства продукта,
-		 продекларированные в jsonDeclare. Сама функция описывает блок продукта, который будет рендериться в интерфейс пользователя. Функция
-		 должна возвращать блок-обертку для всех элементов. Для изменения стилей блоков расметки используйте идентификатор whereId и
-		 его nth-child
-
-	! обязательный
-*/
-const Shop1 = SM.createShop ({
-	name: 'shop1',
-	where: document.querySelector('#main1'),
-	whereId: 'main__product-list1',
-	productList: productList1,
-	cart: cart1,
-	search: search1,
-	pageNumber: 1,
-	productsOnPage: 6,
-	productsOnLine: 6,
-	productBlock: function (pp) {
-		const item = document.createElement('div');
-		item.setAttribute('class', 'main-products-list__item');
-
-		const imgBlock = document.createElement('div');
-		imgBlock.setAttribute('class', 'main-products-list__item-img-block');
-
-		const img = document.createElement('img');
-		img.setAttribute('class', 'main-products-list__item-img');
-		img.setAttribute('src', pp.image);
-
-		const title = document.createElement('p');
-		title.setAttribute('class', 'main-products-list__item-title');
-		title.innerHTML = `id: ${pp.id}</br>product: ${pp.product}</br>type: ${pp.type}</br>serial: ${pp.serial}</br>price: ${pp.price}`;
-
-		const btnAdd = document.createElement('button');
-		btnAdd.setAttribute('class', 'main-products-list__item-btn-add product-btn');
-		btnAdd.textContent = 'Добавить';
-		btnAdd.addEventListener('click', () => {this.cart.addCartProduct(pp)});
-
-		imgBlock.appendChild(img);
-		item.appendChild(imgBlock);
-		item.appendChild(title);
-		item.appendChild(btnAdd);
-		return item;
-	}
-});
-
 export const shop1 = new Vue ({
 	el: '#main1',
 	data: {
@@ -108,6 +52,60 @@ export const shop1 = new Vue ({
 		search1: search1
 	},
 	mounted() {
+		/* SM.createShop
+			! @ url - откуда будем делать запрос
+			! @ where - куда будем рисовать
+			! @ whereId - идентификатор для нарисованного дива
+			! @ productList - список всех товаров полученных из json
+			  @ cart - с какой корзиной нужно связать
+			  @ search - с каким поиском нужно связать
+			! @ pageNumber - какую страницу отрисовать
+			! @ productsOnPage - сколько товаров отрисовать на странице
+			! @ productsOnLine - сколько товаров отрисовать на строке
 
+			! @ productBlock - функция имеет обязательный параметр pp (Product Property), элементами которого являются свойства продукта,
+				 продекларированные в jsonDeclare. Сама функция описывает блок продукта, который будет рендериться в интерфейс пользователя. Функция
+				 должна возвращать блок-обертку для всех элементов. Для изменения стилей блоков расметки используйте идентификатор whereId и
+				 его nth-child
+
+			! обязательный
+		*/
+		const Shop1 = SM.createShop ({
+			name: 'shop1',
+			where: document.querySelector('#main1'),
+			whereId: 'main__product-list1',
+			productList: productList1,
+			cart: cart1,
+			search: search1,
+			pageNumber: 1,
+			productsOnPage: 6,
+			productsOnLine: 6,
+			productBlock: function (pp) {
+				const item = document.createElement('div');
+				item.setAttribute('class', 'main-products-list__item');
+
+				const imgBlock = document.createElement('div');
+				imgBlock.setAttribute('class', 'main-products-list__item-img-block');
+
+				const img = document.createElement('img');
+				img.setAttribute('class', 'main-products-list__item-img');
+				img.setAttribute('src', pp.image);
+
+				const title = document.createElement('p');
+				title.setAttribute('class', 'main-products-list__item-title');
+				title.innerHTML = `id: ${pp.id}</br>product: ${pp.product}</br>type: ${pp.type}</br>serial: ${pp.serial}</br>price: ${pp.price}`;
+
+				const btnAdd = document.createElement('button');
+				btnAdd.setAttribute('class', 'main-products-list__item-btn-add product-btn');
+				btnAdd.textContent = 'Добавить';
+				btnAdd.addEventListener('click', () => {this.cart.addCartProduct(pp)});
+
+				imgBlock.appendChild(img);
+				item.appendChild(imgBlock);
+				item.appendChild(title);
+				item.appendChild(btnAdd);
+				return item;
+			}
+		});
 	}
 });

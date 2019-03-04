@@ -1,31 +1,31 @@
 import {SM} from '../SM/ShopMaker.js';
 
+const cart2 = SM.createCart({
+	name: 'cart2'
+});
+const search2 = SM.createSearch({
+	name: 'search2',
+	input: document.querySelector('#main-search-input2'),
+	button: document.querySelector('#main-search-button2'),
+});
+
+// пример из методички
+const productList2 = SM.createProductList({
+	name:'productList2',
+	jsonDeclare: {
+		id: 'id_product',
+		price: 'price',
+		title: 'product_name'
+	},
+	url: 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json'
+});
+
 export const shop2 = new Vue ({
 	el: '#main2',
 	data: {
 
 	},
 	mounted() {
-		const cart2 = SM.createCart({
-			name: 'cart2'
-		});
-		const search2 = SM.createSearch({
-			name: 'search2',
-			input: document.querySelector('#main-search-input2'),
-			button: document.querySelector('#main-search-button2'),
-		});
-
-		// пример из методички
-		const productList2 = SM.createProductList({
-			name:'productList2',
-			jsonDeclare: {
-				id: 'id_product',
-				price: 'price',
-				title: 'product_name'
-			},
-			url: 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json'
-		});
-
 		const Shop2 = SM.createShop ({
 			name: 'shop2',
 			where: document.querySelector('#main2'),
