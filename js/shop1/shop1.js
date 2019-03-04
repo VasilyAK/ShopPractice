@@ -1,57 +1,58 @@
 import {SM} from '../SM/ShopMaker.js';
 
-/* SM.createCart
-	пока не проработал
-*/
-const cart1 = SM.createCart({
-	name: 'cart1'
-});
-
-/* SM.createSearch
-	! @ name - имя новой поисковой строки
-	! @ input - объект Node input поисковой строки
-	! @ button - объект Node button поисковой строки
-
-	! обязательный
- */
-const search1 = SM.createSearch({
-	name: 'search1',
-	input: document.querySelector('#main-search-input1'),
-	button: document.querySelector('#main-search-button1'),
-});
-
-/* SM.createProductList
-	! @ name - имя нового списка товаров
-	! @ jsonDeclare - задание параметров каждого товара и путей для получения значения из json
-	! @ url - путь до json файла
-
-	! обязательный
- */
-const productList1 = SM.createProductList({
-	name: 'productList1',
-	jsonDeclare: {
-		product: 'product',
-		type: 'items.type',
-		producer: 'items.items.producer',
-		id: 'items.items.items.id_product',
-		price: 'items.items.items.price',
-		pci: 'items.items.items.pci',
-		ram: 'items.items.items.ram',
-		serial: 'items.items.items.serial',
-		equipment: 'items.items.items.equipment',
-		image: 'items.items.items.image',
-
-	},
-	url: 'json/shop.json'
-});
 
 export const shop1 = new Vue ({
 	el: '#main1',
 	data: {
-		cart1: cart1,
-		search1: search1
+
 	},
 	mounted() {
+
+		/* SM.createCart
+			пока не проработал
+		*/
+		const cart1 = SM.createCart({
+			name: 'cart1'
+		});
+
+		/* SM.createSearch
+			! @ name - имя новой поисковой строки
+			! @ input - объект Node input поисковой строки
+			! @ button - объект Node button поисковой строки
+
+			! обязательный
+		 */
+		const search1 = SM.createSearch({
+			name: 'search1',
+			input: document.querySelector('#main-search-input1'),
+			button: document.querySelector('#main-search-button1'),
+		});
+
+		/* SM.createProductList
+			! @ name - имя нового списка товаров
+			! @ jsonDeclare - задание параметров каждого товара и путей для получения значения из json
+			! @ url - путь до json файла
+
+			! обязательный
+		 */
+		const productList1 = SM.createProductList({
+			name: 'productList1',
+			jsonDeclare: {
+				product: 'product',
+				type: 'items.type',
+				producer: 'items.items.producer',
+				id: 'items.items.items.id_product',
+				price: 'items.items.items.price',
+				pci: 'items.items.items.pci',
+				ram: 'items.items.items.ram',
+				serial: 'items.items.items.serial',
+				equipment: 'items.items.items.equipment',
+				image: 'items.items.items.image',
+
+			},
+			url: 'json/shop.json'
+		});
+
 		/* SM.createShop
 			! @ url - откуда будем делать запрос
 			! @ where - куда будем рисовать

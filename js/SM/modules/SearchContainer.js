@@ -34,9 +34,9 @@ export default class SearchContainer extends CommonMethods { // содержит
 				}
 				this.items.push(search);
 				Object.preventExtensions(search); // запрещаем добавлять новые элементы
-				this.items[this.items.length-1].button.addEventListener('click', () => {
-					this.items[this.items.length-1].search();
-				});
+				// навешиваем обработчики событий
+				search.button.addEventListener('click', search.search.bind(search));
+
 				return this.items[this.items.length-1]; //функция возвращает новый созданный объект
 			} else {
 				throw new Error (`New object must have property "name"`)
