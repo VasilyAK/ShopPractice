@@ -99,64 +99,42 @@ body {
 		width: 100%;
 	}
 
-		.main__products-list {
-			align-items: stretch;
-			border: none;
+		.main-products-list__item {
+			align-items: center;
+			border: 1px solid rgb(155, 155, 155);
 			box-sizing: border-box;
 			display: flex;
-			flex-flow: row wrap;
+			flex: 1 0 auto;
+			flex-flow: column nowrap;
 			justify-content: flex-start;
-			padding: 20px 2%;
+			padding: 5%;
 			width: 100%;
 		}
 
-			.main-products-list__item-block {
-				align-items: stretch;
-				background: white;
-				box-sizing: border-box;
+			.main-products-list__item-img-block {
+				align-items: center;
 				display: flex;
-				flex: 0 0 auto;
-				flex-flow: row nowrap;
-				justify-content: flex-start;
-				padding: 10px;
+				flex-flow: column nowrap;
+				justify-content: center;
+				width: 100%;
 			}
 
-				.main-products-list__item {
-					align-items: center;
-					border: 1px solid rgb(155, 155, 155);
-					box-sizing: border-box;
-					display: flex;
-					flex: 1 0 auto;
-					flex-flow: column nowrap;
-					justify-content: flex-start;
-					padding: 5%;
-					width: 100%;
+				.main-products-list__item-img {
+					max-height: 100%;
+					max-width: 100%;
 				}
 
-					.main-products-list__item-img-block {
-						align-items: center;
-						display: flex;
-						flex-flow: column nowrap;
-						justify-content: center;
-						width: 100%;
-					}
+			.main-products-list__item-title {
+				display: block;
+				color: rgb(155, 155, 155);
+				margin: 8px 0 15px;
+				text-align: center;
+			}
 
-						.main-products-list__item-img {
-							max-height: 100%;
-							max-width: 100%;
-						}
-
-					.main-products-list__item-title {
-						display: block;
-						color: rgb(155, 155, 155);
-						margin: 8px 0 15px;
-						text-align: center;
-					}
-
-					.main-products-list__item-btn-add {
-						align-self: flex-end;
-						margin-top: auto;
-					}
+			.main-products-list__item-btn-add {
+				align-self: flex-end;
+				margin-top: auto;
+			}
 
 		.main-products-list__nav {
 			align-items: center;

@@ -3,7 +3,7 @@ import ProductList from './ProductList.js';
 import Cart from './Cart.js';
 import Search from './Search.js';
 import Product from './Product.js';
-import {SM} from '../shopEngine.js';
+import {SM} from '../ShopMaker.js';
 
 export default class Shop extends CommonMethods {
 	constructor (options) {
@@ -116,16 +116,25 @@ export default class Shop extends CommonMethods {
 
 	render (where, whereId, cart) { // whereId - идентификатор вставляемого элемента
 		const mainProductList = document.createElement('div');
-		mainProductList.setAttribute('class', 'main__products-list');
+		//mainProductList.setAttribute('class', 'main__products-list');
 		mainProductList.setAttribute('id', whereId);
+		mainProductList.style.border = `none`;
+		mainProductList.style.boxSizing = `border-box`;
+		mainProductList.style.display = `flex`;
+		mainProductList.style.flexFlow = `row wrap`;
+		mainProductList.style.width = `100%`;
 
-		this.page.forEach((productBlock, index) => {
-			if (productBlock instanceof Product){
+		this.page.forEach((pp, index) => {
+			if (pp instanceof Product){
 				const itemBlock = document.createElement('div');
-				itemBlock.setAttribute('class', 'main-products-list__item-block');
+				//itemBlock.setAttribute('class', 'main-products-list__item-block');
+				itemBlock.style.border = `none`;
+				itemBlock.style.boxSizing = `border-box`;
+				itemBlock.style.display = `flex`;
+				itemBlock.style.flexFlow = `row nowrap`;
 				itemBlock.style.width = `${100 / this.productsOnLine}%`;
 				// тут вставляется пользовательский блок для продукта
-				let userProductBlock = this.productBlock (productBlock);
+				let userProductBlock = this.productBlock (pp);
 				if (userProductBlock instanceof Node) {
 					itemBlock.appendChild(userProductBlock);
 				}

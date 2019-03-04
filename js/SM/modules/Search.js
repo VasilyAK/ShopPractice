@@ -1,6 +1,6 @@
 import CommonMethods from './CommonMethods.js';
 import ProductList from "./ProductList.js";
-import {SM} from '../shopEngine.js';
+import {SM} from '../ShopMaker.js';
 
 export default class Search extends CommonMethods {
 	constructor (options) {
