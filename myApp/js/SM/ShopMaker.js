@@ -11,3 +11,12 @@ export const SM = new SMVAK ({
 	sc: new SearchContainer(),
 	shc: new ShopContainer()
 });
+
+// Shop Maker для Vue
+export const SM$V = new SMVAK ({
+	plc: new ProductListContainer({mod: 'VUE'}),
+	cc: new CartContainer({mod: 'VUE'}),
+	sc: new SearchContainer({mod: 'VUE'}),
+	shc: new ShopContainer({mod: 'VUE'})
+});
+

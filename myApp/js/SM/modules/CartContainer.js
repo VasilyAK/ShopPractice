@@ -17,11 +17,18 @@ export default class CartContainer extends CommonMethods { // содержит �
 				configurable: false,
 				enumerable: true,
 				writable: true
+			},
+
+			'mod': {
+				value: CartContainer.newProperty(options, 'mod', undefined, 'string'),
+				configurable: false,
+				enumerable: true,
+				writable: false
 			}
 		})
 	}
 
-	createCart (cart) {
+	createCart (cart, mod) {
 		if (cart instanceof Cart) {
 			if (cart.name) {
 				for (let i in this.item) {

@@ -14,14 +14,14 @@ export default class Search extends CommonMethods {
 			},
 
 			'input': {
-				value: Search.newProperty(options, 'input', new Error(`'input' is a required parameter`), 'object', Search.checkWhere),
+				value: Search.newProperty(options, 'input', options['mod'] === 'VUE' ? undefined: new Error(`'input' is a required parameter`), 'object', Search.checkWhere),
 				configurable: false,
 				enumerable: true,
 				writable: false
 			},
 
 			'button': {
-				value: Search.newProperty(options, 'button', new Error(`'button' is a required parameter`), 'object', Search.checkWhere),
+				value: Search.newProperty(options, 'button', options['mod'] === 'VUE' ? undefined: new Error(`'button' is a required parameter`), 'object', Search.checkWhere),
 				configurable: false,
 				enumerable: true,
 				writable: false

@@ -4,51 +4,82 @@
 	<meta charset="UTF-8">
 	<title>Shop</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="myApp/css/index.css">
+	<link rel="stylesheet" href="myApp/css/shop1/shop1.css">
+	<link rel="stylesheet" href="myApp/css/shop3/shop3.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 <body>
-<div class="wrapper">
+<div id="wrapper" class="wrapper">
 	<div id="shop1" class="shop">
-		<div class="header">
-			<div class="header__search-block">
-				<input id="main-search-input1" type="text" class="header__search-input">
-				<button id="main-search-button1" class="header__search-btn product-btn">Искать</button>
+		<div class="shop1__header">
+			<div class="shop1-header__search-block">
+				<input id="search1-input" type="text" class="shop1-header__search-input">
+				<button id="search1-button" class="shop1-header__search-btn product-btn">Искать</button>
 			</div>
-			<button class="header__btn-cart product-btn">Корзина</button>
+			<button id="cart1-button" class="shop1-header__btn-cart product-btn">Корзина</button>
 		</div>
-		<div id="main1" class="main" style="background: rgba(255, 0, 0, 0.1)">
-			<p>Первый блок товаров</p>
+		<div id="main1" class="shop1__main">
+			<h2>Блок товаров построенных на моем фреймворке</h2>
 		</div>
 	</div>
 	<div id="shop2" class="shop">
-		<div class="header">
-			<div class="header__search-block">
-				<input id="main-search-input2" type="text" class="header__search-input">
-				<button id="main-search-button2" class="header__search-btn product-btn">Искать</button>
+		<div class="shop2__header">
+			<div class="shop2-header__search-block">
+				<input id="search2-input" type="text" class="shop2-header__search-input">
+				<button id="search2-button" class="shop2-header__search-btn product-btn">Искать</button>
 			</div>
-			<button class="header__btn-cart product-btn">Корзина</button>
+			<button id="cart2-button" class="shop2-header__btn-cart product-btn">Корзина</button>
 		</div>
-		<div id="main2" class="main" style="background: rgba(0, 255, 0, 0.1)">
-			<p>Второй блок товаров</p>
+		<div id="main2" class="shop2__main" style="background: rgba(0, 255, 0, 0.1)">
+			<h2>Второй блок товаров</h2>
 		</div>
 	</div>
 	<div id="shop3" class="shop">
-		<div class="header">
-			<div class="header__search-block">
-				<input id="main-search-input3" type="text" class="header__search-input">
-				<button id="main-search-button3" class="header__search-btn product-btn">Искать</button>
+		<div class="shop3__header">
+			<div class="shop3-header__search-block">
+				<input id="search3-input" type="text" class="shop3-header__search-input">
+				<button v-on:click="goSearch" id="search3-button" class="shop3-header__search-btn product-btn">Искать</button>
 			</div>
-			<button class="header__btn-cart product-btn">Корзина</button>
+			<button id="cart3-button" class="shop3-header__btn-cart product-btn">Корзина</button>
 		</div>
-		<div id="main3" class="main" style="background: rgba(0, 0, 255, 0.1)">
-			<p>Третий блок товаров</p>
+		<div id="main3" class="shop3__main">
+			<h2>Блок товаров построенный с помощью Vue</h2>
+			<products3 v-bind:shop="shop" v-bind:cart="cart"></products3>
+			<div class="shop3-main-items__nav">
+				<ul class="pagination">
+					<li class="page-item" v-bind:class="{disabled: nav.isDis['0']}"><span class="page-link">Первая</span></li>
+					<li class="page-item" v-bind:class="{disabled: nav.isDis['1']}"><span class="page-link">&laquo;</span></li>
+					<li class="page-item"
+						v-bind:class="{active: nav.isAct['0']}" v-on:click="renderPage (nav.val['0'])"><span class="page-link">{{nav.val['0']}}</span></li>
+					<li class="page-item"
+						v-bind:class="{active: nav.isAct['1']}" v-on:click="renderPage (nav.val['1'])"><span
+							class="page-link">{{nav.val['1']}}</span></li>
+					<li class="page-item"
+						v-bind:class="{active: nav.isAct['2']}" v-on:click="renderPage (nav.val['2'])"><span
+						class="page-link">{{nav.val['2']}}</span></li>
+					<li class="page-item"
+						v-bind:class="{active: nav.isAct['3']}" v-on:click="renderPage (nav.val['3'])"><span
+							class="page-link">{{nav.val['3']}}</span></li>
+					<li class="page-item"
+						v-bind:class="{active: nav.isAct['4']}" v-on:click="renderPage (nav.val['4'])"><span
+							class="page-link">{{nav.val['4']}}</span></li>
+					<li class="page-item" v-bind:class="{disabled: nav.isDis['2']}"><span class="page-link">&raquo;</span></li>
+					<li class="page-item" v-bind:class="{disabled: nav.isDis['3']}"><span class="page-link">Последняя</span></li>
+				</ul>
+			</div>
+			<button v-on:click="addToCart(shop.page[0])" style="width: 50px; height: 20px;">add</button>
 		</div>
+		<cart3 v-bind:cart="cart"></cart3>
+		<cart4></cart4>
+		<p>Текст: {{cart.items.length}}</p>
 	</div>
 	<div class="footer">
 		<p class="footer__about-me">Работу выполнил: Калугин Василий</p>
 	</div>
+
+
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="js/index.js" type="module" defer></script>
+<script src="myApp/js/index.js" type="module" defer></script>
 </body>
 </html>

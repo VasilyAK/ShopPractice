@@ -1,0 +1,19 @@
+{
+  "name": "shop_vak",
+  "version": "0.5.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VasilyAK/ShopPractice.git"
+  },
+  "author": "VAK",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VasilyAK/ShopPractice/issues"
+  },
+  "homepage": "https://github.com/VasilyAK/ShopPractice#readme"
+}

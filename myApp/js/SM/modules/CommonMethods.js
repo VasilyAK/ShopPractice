@@ -21,7 +21,7 @@ export default class CommonMethods {
 
 	static checkWhere (where, name) {
 		try {
-			if (!(where instanceof Node && isNodeOfBody(where))){
+			if (!(where instanceof Node /*&& isNodeOfBody(where)*/)){
 				throw new Error(`${name} error: 'where' is not a node of Body. The document must have block to insert "main__products-list`)
 			} else {
 				return where;

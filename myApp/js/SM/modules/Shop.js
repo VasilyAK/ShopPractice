@@ -17,14 +17,14 @@ export default class Shop extends CommonMethods {
 			},
 
 			'where': {
-				value: Shop.newProperty(options, 'where', new Error('"where" is necessary property'), 'object', Shop.checkWhere),
+				value: Shop.newProperty(options, 'where', options['mod'] === 'VUE' ? undefined: new Error('"where" is necessary property'), 'object', Shop.checkWhere),
 				configurable: false,
 				enumerable: true,
 				writable: false
 			},
 
 			'whereId': {
-				value: Shop.newProperty(options, 'whereId', new Error('"whereId" is necessary property'), 'string'),
+				value: Shop.newProperty(options, 'whereId', options['mod'] === 'VUE' ? undefined: new Error('"whereId" is necessary property'), 'string'),
 				enumerable: true,
 				writable: false
 			},
@@ -51,7 +51,7 @@ export default class Shop extends CommonMethods {
 			},
 
 			'page': {
-				value: Shop.newProperty(options, 'page', [], 'object'),
+				value: Shop.newProperty(options, 'page', options['mod'] === 'VUE' ? undefined: [], 'object'),
 				configurable: false,
 				enumerable: true,
 				writable: true
@@ -72,19 +72,23 @@ export default class Shop extends CommonMethods {
 			},
 
 			'productsOnLine': {
-				value: Shop.newProperty(options, 'productsOnLine', 6, 'number', Shop.checkProductsOnLine),
+				value: Shop.newProperty(options, 'productsOnLine', options['mod'] === 'VUE' ? undefined: 6, 'number', Shop.checkProductsOnLine),
 				configurable: false,
 				enumerable: true,
 				writable: false
 			},
 
 			'productBlock': {
-				value: Shop.newProperty(options, 'productBlock',  new Error('"productBlock" is necessary property'), 'function'),
+				value: Shop.newProperty(options, 'productBlock', options['mod'] === 'VUE' ? undefined:  new Error('"productBlock" is necessary property'), 'function'),
 				configurable: false,
 				enumerable: true,
 				writable: false
 			}
 		})
+	}
+	render(pageNumber) {
+		this.initPage(pageNumber);
+		return this.renderPage(this.where, this.whereId, this.cart);
 	}
 
 	createPageItem (product) {
@@ -114,7 +118,7 @@ export default class Shop extends CommonMethods {
 		}
 	}
 
-	render (where, whereId, cart) { // whereId - идентификатор вставляемого элемента
+	renderPage (where, whereId, cart) { // whereId - идентификатор вставляемого элемента
 		const mainProductList = document.createElement('div');
 		//mainProductList.setAttribute('class', 'main__products-list');
 		mainProductList.setAttribute('id', whereId);
@@ -134,10 +138,7 @@ export default class Shop extends CommonMethods {
 				itemBlock.style.flexFlow = `row nowrap`;
 				itemBlock.style.width = `${100 / this.productsOnLine}%`;
 				// тут вставляется пользовательский блок для продукта
-				let userProductBlock = this.productBlock (pp);
-				if (userProductBlock instanceof Node) {
-					itemBlock.appendChild(userProductBlock);
-				}
+				itemBlock.innerHTML = this.productBlock(pp);
 
 				mainProductList.appendChild(itemBlock);
 			} else {
@@ -168,6 +169,7 @@ export default class Shop extends CommonMethods {
 			where.appendChild(mainProductList);
 			where.appendChild(this.createNav(whereId, this.pageNumber - 2, this.pageNumber + 2, this.pageNumber, where, cart));
 		}
+		return mainProductList;
 	}
 
 	createNav (whereId, from, to, active, where, cart) {
@@ -179,11 +181,11 @@ export default class Shop extends CommonMethods {
 			to = Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage)
 		}
 		const nav = document.createElement('div');
-		nav.setAttribute('class', 'main-products-list__nav');
+		nav.setAttribute('class', `${whereId}__nav`);
 		nav.setAttribute('id', `${whereId}-nav`);
 
 		const ul = document.createElement('ul');
-		ul.setAttribute('class', 'pagination main-products-list__nav-ul');
+		ul.setAttribute('class', `pagination`);
 
 		const liFirst = document.createElement('li');
 		const liPrev = document.createElement('li');
@@ -197,18 +199,20 @@ export default class Shop extends CommonMethods {
 
 		const liFirstP = document.createElement('span');
 		const liPrevP = document.createElement('span');
-		liFirstP.setAttribute('class', 'page-link main-products-list__nav-span');
-		liPrevP.setAttribute('class', 'page-link main-products-list__nav-span');
+		liFirstP.setAttribute('class', `page-link`);
+		liPrevP.setAttribute('class', `page-link`);
+		liFirstP.style.cursor = 'pointer';
+		liPrevP.style.cursor = 'pointer';
 		liFirstP.textContent = 'Первая';
 		liPrevP.textContent = '«';
 
 		liFirstP.addEventListener('click', () => {
 			this.initPage(1);
-			this.render(where, whereId, cart, this.pageNumber);
+			this.renderPage(where, whereId, cart, this.pageNumber);
 		});
 		liPrevP.addEventListener('click', () => {
 			this.initPage(this.pageNumber-1);
-			this.render(where, whereId, cart, this.pageNumber);
+			this.renderPage(where, whereId, cart, this.pageNumber);
 		});
 
 		liFirst.appendChild(liFirstP);
@@ -224,11 +228,12 @@ export default class Shop extends CommonMethods {
 				li.setAttribute('class', 'page-item');
 				li.addEventListener('click', () => {
 					this.initPage(i);
-					this.render(where, whereId, cart, this.pageNumber);
+					this.renderPage(where, whereId, cart, this.pageNumber);
 				});
 			}
 			const liP = document.createElement('span');
-			liP.setAttribute('class', 'page-link main-products-list__nav-span');
+			liP.setAttribute('class', `page-link`);
+			liP.style.cursor = 'pointer';
 			liP.textContent = i;
 
 			li.appendChild(liP);
@@ -247,18 +252,20 @@ export default class Shop extends CommonMethods {
 
 		const liLastP = document.createElement('span');
 		const liNextP = document.createElement('span');
-		liLastP.setAttribute('class', 'page-link main-products-list__nav-span');
-		liNextP.setAttribute('class', 'page-link main-products-list__nav-span');
+		liLastP.setAttribute('class', `page-link`);
+		liNextP.setAttribute('class', `page-link`);
+		liLastP.style.cursor = 'pointer';
+		liNextP.style.cursor = 'pointer';
 		liLastP.textContent = 'Последняя';
 		liNextP.textContent = '»';
 
 		liLastP.addEventListener('click', () => {
 			this.initPage(Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage));
-			this.render(where, whereId, cart, this.pageNumber);
+			this.renderPage(where, whereId, cart, this.pageNumber);
 		});
 		liNextP.addEventListener('click', () => {
 			this.initPage(this.pageNumber+1);
-			this.render(where, whereId, cart, this.pageNumber);
+			this.renderPage(where, whereId, cart, this.pageNumber);
 		});
 
 		liNext.appendChild(liNextP);

@@ -17,6 +17,13 @@ export default class ProductListContainer extends CommonMethods { // содер�
 				configurable: false,
 				enumerable: true,
 				writable: true
+			},
+
+			'mod': {
+				value: ProductList.newProperty(options, 'mod', undefined, 'string'),
+				configurable: false,
+				enumerable: true,
+				writable: false
 			}
 		})
 	}

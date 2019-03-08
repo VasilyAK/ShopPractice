@@ -17,11 +17,18 @@ export default class SearchContainer extends CommonMethods { // содержит
 				configurable: false,
 				enumerable: true,
 				writable: true
+			},
+
+			'mod': {
+				value: SearchContainer.newProperty(options, 'mod', undefined, 'string'),
+				configurable: false,
+				enumerable: true,
+				writable: false
 			}
 		})
 	}
 
-	createSearch (search) {
+	createSearch (search, mod) {
 		if (search instanceof Search) {
 			if (search.name) {
 				for (let i in this.items) {
@@ -35,7 +42,9 @@ export default class SearchContainer extends CommonMethods { // содержит
 				this.items.push(search);
 				Object.preventExtensions(search); // запрещаем добавлять новые элементы
 				// навешиваем обработчики событий
-				search.button.addEventListener('click', search.search.bind(search));
+				if (!(mod && mod === 'VUE')) {
+					search.button.addEventListener('click', search.search.bind(search));
+				}
 
 				return this.items[this.items.length-1]; //функция возвращает новый созданный объект
 			} else {

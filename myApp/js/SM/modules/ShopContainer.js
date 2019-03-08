@@ -17,16 +17,23 @@ export default class ShopContainer extends CommonMethods { // содержит �
 				configurable: false,
 				enumerable: true,
 				writable: true
+			},
+
+			'mod': {
+				value: ShopContainer.newProperty(options, 'mod', undefined, 'string'),
+				configurable: false,
+				enumerable: true,
+				writable: false
 			}
 		})
 	}
 
-	createShop (shop) {
+	createShop (shop, mod) {
 		if (shop instanceof Shop) {
 			if (shop.name) {
 				for (let i in this.items) {
 					if (this.items.hasOwnProperty(i)) {
-						if (this.items.name === shop.name) {
+						if (this.items[i].name === shop.name) {
 							console.log(new Error (`${shop.name} is already in ${this.name}`));
 							return;
 						}
@@ -35,13 +42,16 @@ export default class ShopContainer extends CommonMethods { // содержит �
 				this.items.push(shop);
 				Object.preventExtensions(shop); // запрещаем добавлять новые элементы
 
-				shop.productList.fetchSource(shop.productList.url)
+				return shop.productList.fetchSource(shop.productList.url)
 					.then(() => {
-						shop.initPage(shop.checkPageNumber(shop.pageNumber));
-						shop.render(shop.where, shop.whereId, shop.cart);
+						if (mod && mod === 'VUE') {
+							shop.initPage(shop.pageNumber)
+						} else {
+							shop.render(shop.pageNumber)
+						}
+						return this.items[this.items.length-1]; //функция возвращает новый созданный объект
 					});
 
-				return this.items[this.items.length-1]; //функция возвращает новый созданный объект
 			} else {
 				throw new Error (`New object must have property "name"`)
 			}
