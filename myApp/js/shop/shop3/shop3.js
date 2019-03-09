@@ -44,30 +44,19 @@ const productList3 = SM$V.createProductList({
 });
 
 
+/* SM$v.createShop  - возвращает промисс с новым объектом shop
+	! @ url - откуда будем делать запрос
+	! @ productList - список всех товаров полученных из json
+	  @ cart - с какой корзиной нужно связать
+	  @ search - с каким поиском нужно связать
+	! @ productsOnPage - сколько товаров отрисовать на странице
 
-export const SM3 = {
-	cart3: cart3,
-	search3: search3,
-	productList3: productList3,
-
-	/* SM.createShop  - возвращает промисс с новым объектом shop
-				! @ url - откуда будем делать запрос
-				! @ productList - список всех товаров полученных из json
-				  @ cart - с какой корзиной нужно связать
-				  @ search - с каким поиском нужно связать
-				! @ pageNumber - какую страницу отрисовать
-				! @ productsOnPage - сколько товаров отрисовать на странице
-
-				! обязательный
-			*/
-	shop3: SM$V.createShop.bind(SM$V),
-
-	shop3Options: {
-		name: 'shop3',
-		productList: productList3,
-		cart: cart3,
-		search: search3,
-		pageNumber: 1,
-		productsOnPage: 4
-	}
-};
+	! обязательный
+*/
+export const shop3 = SM$V.createShop({
+	name: 'shop3',
+	productList: productList3,
+	cart: cart3,
+	search: search3,
+	productsOnPage: 4
+});

@@ -38,7 +38,6 @@ export default class ProductListContainer extends CommonMethods { // содер�
 					}
 				}
 				this.items.push(productList);
-				Object.preventExtensions(productList); // запрещаем добавлять новые элементы
 				return this.items[this.items.length-1]; //функция возвращает новый созданный объект
 			} else {
 				throw new Error (`New object must have property "name"`)

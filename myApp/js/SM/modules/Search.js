@@ -5,43 +5,49 @@ import {SM} from '../ShopMaker.js';
 export default class Search extends CommonMethods {
 	constructor (options) {
 		super();
-		Object.defineProperties(this, {
-			'name': {
-				value: Search.newProperty(options, 'name', new Error('"name" is a required property'), 'string'),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+		if (options['mod'] && options['mod'] === 'VUE') {
+			this.name = Search.newProperty(options, 'name', new Error('"name" is a required property'), 'string');
+			this.text = Search.newProperty(options, 'text', [], 'object');
+			this.map = Search.newProperty(options, 'map', [], 'object');
+		} else {
+			Object.defineProperties(this, {
+				'name': {
+					value: Search.newProperty(options, 'name', new Error('"name" is a required property'), 'string'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'input': {
-				value: Search.newProperty(options, 'input', options['mod'] === 'VUE' ? undefined: new Error(`'input' is a required parameter`), 'object', Search.checkWhere),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'input': {
+					value: Search.newProperty(options, 'input', new Error(`'input' is a required parameter`), 'object', Search.checkWhere),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'button': {
-				value: Search.newProperty(options, 'button', options['mod'] === 'VUE' ? undefined: new Error(`'button' is a required parameter`), 'object', Search.checkWhere),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'button': {
+					value: Search.newProperty(options, 'button', new Error(`'button' is a required parameter`), 'object', Search.checkWhere),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'text': {
-				value: Search.newProperty(options, 'text', [], 'object'),
-				configurable: false,
-				enumerable: true,
-				writable: true
-			},
+				'text': {
+					value: Search.newProperty(options, 'text', [], 'object'),
+					configurable: false,
+					enumerable: true,
+					writable: true
+				},
 
-			// простейшая карта по результатам поиска
-			'map': {
-				value: Search.newProperty(options, 'map', [], 'object'),
-				configurable: false,
-				enumerable: true,
-				writable: true
-			}
-		});
+				// простейшая карта по результатам поиска
+				'map': {
+					value: Search.newProperty(options, 'map', [], 'object'),
+					configurable: false,
+					enumerable: true,
+					writable: true
+				}
+			});
+		}
 	}
 
 	setText(input) {

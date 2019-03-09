@@ -8,110 +8,125 @@ import {SM} from '../ShopMaker.js';
 export default class Shop extends CommonMethods {
 	constructor (options) {
 		super();
-		Object.defineProperties(this, {
-			'name': {
-				value: Shop.newProperty(options, 'name', new Error('"name" is necessary property'), 'string'),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+		if (options['mod'] && options['mod'] === 'VUE') {
+			this.name = Shop.newProperty(options, 'name', new Error('"name" is necessary property'), 'string');
+			this.productList = Shop.newProperty(options, 'productList', new Error('"productList" is necessary property'), 'object', Shop.checkProductList);
+			this.search = Shop.newProperty(options, 'search', undefined, 'object', Shop.checkSearch);
+			this.cart = Shop.newProperty(options, 'cart', undefined, 'object', Shop.checkCart);
+			this.page = Shop.newProperty(options, 'page', options['mod'] === 'VUE' ? undefined: [], 'object');
+			this.pageNumber = Shop.newProperty(options, 'pageNumber', 1, 'number');
+			this.productsOnPage = Shop.newProperty(options, 'productsOnPage', 6, 'number', Shop.checkProductsOnPage);
+			this.mod = 'VUE';
+		} else {
+			Object.defineProperties(this, {
+				'name': {
+					value: Shop.newProperty(options, 'name', new Error('"name" is necessary property'), 'string'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'where': {
-				value: Shop.newProperty(options, 'where', options['mod'] === 'VUE' ? undefined: new Error('"where" is necessary property'), 'object', Shop.checkWhere),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'where': {
+					value: Shop.newProperty(options, 'where', new Error('"where" is necessary property'), 'object', Shop.checkWhere),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'whereId': {
-				value: Shop.newProperty(options, 'whereId', options['mod'] === 'VUE' ? undefined: new Error('"whereId" is necessary property'), 'string'),
-				enumerable: true,
-				writable: false
-			},
+				'whereId': {
+					value: Shop.newProperty(options, 'whereId', new Error('"whereId" is necessary property'), 'string'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'productList': {
-				value: Shop.newProperty(options, 'productList', new Error('"productList" is necessary property'), 'object', Shop.checkProductList),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'productList': {
+					value: Shop.newProperty(options, 'productList', new Error('"productList" is necessary property'), 'object', Shop.checkProductList),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'search': {
-				value: Shop.newProperty(options, 'search', undefined, 'object', Shop.checkSearch),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'search': {
+					value: Shop.newProperty(options, 'search', undefined, 'object', Shop.checkSearch),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'cart': {
-				value: Shop.newProperty(options, 'cart', undefined, 'object', Shop.checkCart),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'cart': {
+					value: Shop.newProperty(options, 'cart', undefined, 'object', Shop.checkCart),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'page': {
-				value: Shop.newProperty(options, 'page', options['mod'] === 'VUE' ? undefined: [], 'object'),
-				configurable: false,
-				enumerable: true,
-				writable: true
-			},
+				'page': {
+					value: Shop.newProperty(options, 'page', [], 'object'),
+					configurable: false,
+					enumerable: true,
+					writable: true
+				},
 
-			'pageNumber': {
-				value: Shop.newProperty(options, 'pageNumber', 1, 'number'),
-				configurable: false,
-				enumerable: true,
-				writable: true
-			},
+				'pageNumber': {
+					value: Shop.newProperty(options, 'pageNumber', 1, 'number'),
+					configurable: false,
+					enumerable: true,
+					writable: true
+				},
 
-			'productsOnPage': {
-				value: Shop.newProperty(options, 'productsOnPage', 18, 'number', Shop.checkProductsOnPage),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'productsOnPage': {
+					value: Shop.newProperty(options, 'productsOnPage', 18, 'number', Shop.checkProductsOnPage),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'productsOnLine': {
-				value: Shop.newProperty(options, 'productsOnLine', options['mod'] === 'VUE' ? undefined: 6, 'number', Shop.checkProductsOnLine),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'productsOnLine': {
+					value: Shop.newProperty(options, 'productsOnLine', 6, 'number', Shop.checkProductsOnLine),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'productBlock': {
-				value: Shop.newProperty(options, 'productBlock', options['mod'] === 'VUE' ? undefined:  new Error('"productBlock" is necessary property'), 'function'),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			}
-		})
+				'productBlock': {
+					value: Shop.newProperty(options, 'productBlock', new Error('"productBlock" is necessary property'), 'function'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				}
+			})
+		}
 	}
+
 	render(pageNumber) {
 		this.initPage(pageNumber);
 		return this.renderPage(this.where, this.whereId, this.cart);
 	}
 
-	createPageItem (product) {
+	findProductDouble (product) {
 		if (product instanceof Product){
 			for (let i in this.page) {
 				if (this.page[i].identity(product)) {
 					console.log(new Error(`${this.name} has already initialized`));
-					return
+					return product;
 				}
 			}
-			Object.preventExtensions(product); // запрещаем добавлять новые элементы
-			this.page.push(product);
+			return product;
 		} else {
 			throw new Error(`New object is not a copy of "Product"`)
 		}
 	}
 
 	initPage (pageNumber) {
-		this.page = [];
-		this.pageNumber = pageNumber;
+		this.page = new Array(0);
+		this.pageNumber = this.checkPageNumber(pageNumber);
 		for (let i = (this.pageNumber-1)*(this.productsOnPage); i < (this.pageNumber)*(this.productsOnPage); i++) {
 			if (this.productList.source[i]){
-				this.createPageItem(new Product(this.productList.source[i]));
+				if (this.mod === 'VUE') {
+					this.productList.source[i].mod = 'VUE';
+				}
+				this.page.push(this.findProductDouble(new Product(this.productList.source[i])));
 			} else {
 				return
 			}
@@ -120,7 +135,6 @@ export default class Shop extends CommonMethods {
 
 	renderPage (where, whereId, cart) { // whereId - идентификатор вставляемого элемента
 		const mainProductList = document.createElement('div');
-		//mainProductList.setAttribute('class', 'main__products-list');
 		mainProductList.setAttribute('id', whereId);
 		mainProductList.style.border = `none`;
 		mainProductList.style.boxSizing = `border-box`;
@@ -131,7 +145,6 @@ export default class Shop extends CommonMethods {
 		this.page.forEach((pp, index) => {
 			if (pp instanceof Product){
 				const itemBlock = document.createElement('div');
-				//itemBlock.setAttribute('class', 'main-products-list__item-block');
 				itemBlock.style.border = `none`;
 				itemBlock.style.boxSizing = `border-box`;
 				itemBlock.style.display = `flex`;
@@ -175,10 +188,12 @@ export default class Shop extends CommonMethods {
 	createNav (whereId, from, to, active, where, cart) {
 		//навигационная панель
 		if (from < 1 ) {
-			from = 1
+			from = 1;
+			to = 5
 		}
 		if (to > Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage)){
-			to = Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage)
+			to = Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage);
+			from = to - 4;
 		}
 		const nav = document.createElement('div');
 		nav.setAttribute('class', `${whereId}__nav`);

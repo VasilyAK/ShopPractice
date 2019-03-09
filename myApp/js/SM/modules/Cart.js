@@ -5,54 +5,33 @@ import CartProduct from './CartProduct.js';
 export default class Cart extends CommonMethods {
 	constructor (options) {
 		super();
-		Object.defineProperties(this, {
-			'name': {
-				value: Cart.newProperty(options, 'name', new Error('"name" is a required property'), 'string'),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+		if (options['mod'] && options['mod'] === 'VUE') {
+			this.name = Cart.newProperty(options, 'name', new Error('"name" is a required property'), 'string');
+			this.items = Cart.newProperty(options, 'items', [], 'object');
+			this.mod = 'VUE';
+		} else {
+			Object.defineProperties(this, {
+				'name': {
+					value: Cart.newProperty(options, 'name', new Error('"name" is a required property'), 'string'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'button': {
-				value: Cart.newProperty(options, 'button', options['mod'] === 'VUE' ? undefined: new Error(`'button' is a required parameter`), 'object', Cart.checkWhere),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'button': {
+					value: Cart.newProperty(options, 'button', new Error(`'button' is a required parameter`), 'object', Cart.checkWhere),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'items': {
-				value: Cart.newProperty(options, 'items', [], 'object'),
-				configurable: false,
-				enumerable: true
-			}
-		})
-	}
-
-	vueSetOptions (product) { // для vue
-		/*for (let i in this.items) {
-			if (this.items.hasOwnProperty(i)) {
-				if (this.items[i].product.identity(product)) { // если в корзине есть товар, добавляем его колличество
-					return {
-						index: i,
-						value: new CartProduct ({
-							id: this.items[i].id,
-							product: product,
-							quantity: this.items[i].quantity + 1
-						})
-					}
+				'items': {
+					value: Cart.newProperty(options, 'items', [], 'object'),
+					configurable: false,
+					enumerable: true
 				}
-			}
-		}
-		return {
-			index: this.items.length,
-			value: new CartProduct ({
-				id: this.items.length,
-				product: product,
-				quantity: 1
 			})
-		}*/
-		this.addCartProduct(product);
-		return this;
+		}
 	}
 
 	addCartProduct (product) {
@@ -60,16 +39,41 @@ export default class Cart extends CommonMethods {
 			for (let i in this.items) {
 				if (this.items.hasOwnProperty(i)) {
 					if (this.items[i].product.identity(product)) { // если в корзине есть товар, добавляем его колличество
-						this.items[i].quantity++;
-						return
+						if (this.mod = 'VUE') {
+							return {
+								index: i,
+								value: new CartProduct ({
+									id: this.items[i].id,
+									product: product,
+									quantity: this.items[i].quantity + 1,
+									mod: this.mod
+								})
+							}
+						} else {
+							this.items[i].quantity++;
+							return
+						}
+
 					}
 				}
 			}
-
-			this.items.push (new CartProduct ({
-				id: this.items.length+1,
-				product: product,
-			}));
+			if (this.mod = 'VUE') {
+				return {
+					index: this.items.length,
+					value: new CartProduct ({
+						id: this.items.length,
+						product: product,
+						quantity: 1,
+						mod: this.mod
+					})
+				}
+			} else {
+				this.items.push (new CartProduct ({
+					id: this.items.length+1,
+					product: product,
+					mod: this.mod
+				}));
+			}
 		} else {
 			throw new Error(`New object is not a copy of "Product"`)
 		}
@@ -104,7 +108,7 @@ export default class Cart extends CommonMethods {
 
 	cost (id, price) {
 		try {
-			if (price && id && typeof id === 'number') {
+			if (typeof id === 'number') {
 				for (let item in this.items) {
 					if (this.items.hasOwnProperty(item)) {
 						if (item.id === id) {
@@ -128,10 +132,10 @@ export default class Cart extends CommonMethods {
 
 	totalCost (price) {
 		try {
-			let result =0;
+			let result = 0;
 			for (let item in this.items) {
 				if (this.items.hasOwnProperty(item)) {
-					if (price && item.product[price] && typeof item.product[price] === 'number') {
+					if (typeof item.product[price] === 'number') {
 						result += item.product[price];
 					} else {
 						throw new Error('Method "totalCost" must have parameter: price (number) - price of product in' +

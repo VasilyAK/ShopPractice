@@ -1,15 +1,9 @@
 export const cart3Vue = Vue.component ('cart3', {
-	data () {
-		return {
-
-		}
-	},
-
 	template:
 		`<div class='shop3_cart-block'>
 			<div class='shop3_cart'>
-				<p v-if="cart.items.length === 0">Корзина пуста</p>
-				<table v-if="cart.items.length > 0" class='shop3_cart-items'>
+				<p v-if="typeof shop.cart === 'object' && shop.cart.items.length === 0">Корзина пуста</p>
+				<table v-if="typeof shop.cart === 'object' && shop.cart.items.length > 0" class='shop3_cart-items'>
 					<tr>
 						<th>Номер</th>
 						<th>Название</th>
@@ -23,7 +17,7 @@ export const cart3Vue = Vue.component ('cart3', {
 						<th>Количество</th>
 						<th>Стоимость</th>
 					</tr>
-					<tr v-for="item in cart.items">
+					<tr v-for="item in shop.cart.items">
 						<td>{{item.id}}</td>
 						<td>{{item.product.category}}</td>
 						<td>{{item.product.type}}</td>
@@ -33,7 +27,7 @@ export const cart3Vue = Vue.component ('cart3', {
 						<td>{{item.product.serial}}</td>
 						<td>{{item.equipment}}</td>
 						<td><button>+</button><p>{{item.quantity}}</p><button>-</button></td>
-						<td>{{cart.cost(item.id, item.product.price)}}</td>
+						<td>{{shop.cart.cost(item.id, item.product.price)}}</td>
 					</tr>
 					<tr>
 						<td>Всего товаров:</td>
@@ -48,6 +42,6 @@ export const cart3Vue = Vue.component ('cart3', {
 		</div>`,
 
 	props: {
-		cart: Object,
+		shop: Object,
 	}
 });

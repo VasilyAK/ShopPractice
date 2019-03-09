@@ -40,7 +40,6 @@ export default class ShopContainer extends CommonMethods { // содержит �
 					}
 				}
 				this.items.push(shop);
-				Object.preventExtensions(shop); // запрещаем добавлять новые элементы
 
 				return shop.productList.fetchSource(shop.productList.url)
 					.then(() => {

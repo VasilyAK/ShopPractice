@@ -44,7 +44,7 @@ export default class SMVAK extends CommonMethods {
 			name: options.name,
 			button: options.button,
 			mod: this.cc.mod
-		}), this.sc.mod)
+		}), this.cc.mod)
 	}
 
 	createSearch (options) {
@@ -61,7 +61,8 @@ export default class SMVAK extends CommonMethods {
 			name: options.name,
 			jsonDeclare: options.jsonDeclare,
 			url: options.url,
-		}))
+			mod: this.plc.mod
+		}), this.plc.mod)
 	}
 
 	createShop (options) {

@@ -49,14 +49,7 @@ const productList1 = SM.createProductList({
 	url: 'myApp/json/shop.json'
 });
 
-
-
-export const SM1 = {
-	cart1: cart1,
-	search1: search1,
-	productList1: productList1,
-
-	/* SM.createShop  - возвращает промисс с новым объектом shop
+/* SM.createShop  - возвращает промисс с новым объектом shop
 			! @ url - откуда будем делать запрос
 			! @ where - куда будем рисовать
 			! @ whereId - идентификатор для нарисованного дива
@@ -74,51 +67,50 @@ export const SM1 = {
 
 			! обязательный
 		*/
-	shop1: SM.createShop({
-		name: 'shop1',
-		where: document.querySelector('#main1'),
-		whereId: 'shop1-main-items',
-		productList: productList1,
-		cart: cart1,
-		search: search1,
-		pageNumber: 1,
-		productsOnPage: 6,
-		productsOnLine: 3,
-		productBlock: function (pp) {
-			return `<div class="shop1-main-items__item">
-				<div class="shop1-main-items__item-img-block">
-					<img class="shop1-main-items__item-img" src="${pp.image}" alt="">
-				</div>
-				<p class="shop1-main-items__item-title">id: ${pp.id}</br>product: ${pp.category}</br>type: ${pp.type}</br>serial: ${pp.serial}</br>price: 
+export const shop1 = SM.createShop({
+	name: 'shop1',
+	where: document.querySelector('#main1'),
+	whereId: 'shop1-main-items',
+	productList: productList1,
+	cart: cart1,
+	search: search1,
+	pageNumber: 1,
+	productsOnPage: 6,
+	productsOnLine: 3,
+	productBlock: function (pp) {
+		return `<div class="shop1-main-items__item">
+			<div class="shop1-main-items__item-img-block">
+				<img class="shop1-main-items__item-img" src="${pp.image}" alt="">
+			</div>
+			<p class="shop1-main-items__item-title">id: ${pp.id}</br>product: ${pp.category}</br>type: ${pp.type}</br>serial: ${pp.serial}</br>price: 
 ${pp.price}</p>
-				<button class="shop1-main-items__item-btn-add product-btn">Добавить</button>				
-			</div>`
-		}
-			/*function (pp) {
-			const item = document.createElement('div');
-			item.setAttribute('class', 'main-products-list__item');
+			<button class="shop1-main-items__item-btn-add product-btn">Добавить</button>				
+		</div>`
+	}
+		/*function (pp) {
+		const item = document.createElement('div');
+		item.setAttribute('class', 'main-products-list__item');
 
-			const imgBlock = document.createElement('div');
-			imgBlock.setAttribute('class', 'main-products-list__item-img-block');
+		const imgBlock = document.createElement('div');
+		imgBlock.setAttribute('class', 'main-products-list__item-img-block');
 
-			const img = document.createElement('img');
-			img.setAttribute('class', 'main-products-list__item-img');
-			img.setAttribute('src', pp.image);
+		const img = document.createElement('img');
+		img.setAttribute('class', 'main-products-list__item-img');
+		img.setAttribute('src', pp.image);
 
-			const title = document.createElement('p');
-			title.setAttribute('class', 'main-products-list__item-title');
-			title.innerHTML = `id: ${pp.id}</br>product: ${pp.product}</br>type: ${pp.type}</br>serial: ${pp.serial}</br>price: ${pp.price}`;
+		const title = document.createElement('p');
+		title.setAttribute('class', 'main-products-list__item-title');
+		title.innerHTML = `id: ${pp.id}</br>product: ${pp.product}</br>type: ${pp.type}</br>serial: ${pp.serial}</br>price: ${pp.price}`;
 
-			const btnAdd = document.createElement('button');
-			btnAdd.setAttribute('class', 'main-products-list__item-btn-add product-btn');
-			btnAdd.textContent = 'Добавить';
-			btnAdd.addEventListener('click', () => {this.cart.addCartProduct(pp)});
+		const btnAdd = document.createElement('button');
+		btnAdd.setAttribute('class', 'main-products-list__item-btn-add product-btn');
+		btnAdd.textContent = 'Добавить';
+		btnAdd.addEventListener('click', () => {this.cart.addCartProduct(pp)});
 
-			imgBlock.appendChild(img);
-			item.appendChild(imgBlock);
-			item.appendChild(title);
-			item.appendChild(btnAdd);
-			return item;
-		}*/
-	})
-};
+		imgBlock.appendChild(img);
+		item.appendChild(imgBlock);
+		item.appendChild(title);
+		item.appendChild(btnAdd);
+		return item;
+	}*/
+});

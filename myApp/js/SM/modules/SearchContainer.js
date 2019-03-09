@@ -40,8 +40,6 @@ export default class SearchContainer extends CommonMethods { // содержит
 					}
 				}
 				this.items.push(search);
-				Object.preventExtensions(search); // запрещаем добавлять новые элементы
-				// навешиваем обработчики событий
 				if (!(mod && mod === 'VUE')) {
 					search.button.addEventListener('click', search.search.bind(search));
 				}

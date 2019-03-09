@@ -3,35 +3,42 @@ import CommonMethods from './CommonMethods.js';
 export default class ProductList extends CommonMethods{
 	constructor (options) {
 		super();
-		Object.defineProperties(this, {
-			'name': {
-				value: ProductList.newProperty(options, 'name', new Error('"name" is necessary property'), 'string'),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+		if (options['mod'] && options['mod'] === 'VUE') {
+			this.name = ProductList.newProperty(options, 'name', new Error('"name" is necessary property'), 'string');
+			this.jsonDeclare = ProductList.newProperty(options, 'jsonDeclare', {}, 'object');
+			this.url = ProductList.newProperty(options, 'url', '', 'string');
+			this.source = ProductList.newProperty(options, 'source', [], 'object')
+		} else {
+			Object.defineProperties(this, {
+				'name': {
+					value: ProductList.newProperty(options, 'name', new Error('"name" is necessary property'), 'string'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'jsonDeclare': {
-				value: ProductList.newProperty(options, 'jsonDeclare', {}, 'object'),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'jsonDeclare': {
+					value: ProductList.newProperty(options, 'jsonDeclare', {}, 'object'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'url': {
-				value: ProductList.newProperty(options, 'url', '', 'string'),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			},
+				'url': {
+					value: ProductList.newProperty(options, 'url', '', 'string'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
 
-			'source': {
-				value: ProductList.newProperty(options, 'source', [], 'object'),
-				configurable: false,
-				enumerable: true,
-				writable: false
-			}
-		});
+				'source': {
+					value: ProductList.newProperty(options, 'source', [], 'object'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				}
+			});
+		}
 	}
 
 	fetchSource () {
@@ -163,11 +170,4 @@ export default class ProductList extends CommonMethods{
 			this.source.push(sourceObj)
 		});
 	}
-	/*
-	totalCost () {
-		return this.products.reduce((sum, elem) => {
-			return sum += elem.price;
-		}, 0)
-	}
-	*/
 }

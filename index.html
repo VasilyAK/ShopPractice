@@ -45,34 +45,10 @@
 		</div>
 		<div id="main3" class="shop3__main">
 			<h2>Блок товаров построенный с помощью Vue</h2>
-			<products3 v-bind:shop="shop" v-bind:cart="cart"></products3>
-			<div class="shop3-main-items__nav">
-				<ul class="pagination">
-					<li class="page-item" v-bind:class="{disabled: nav.isDis['0']}"><span class="page-link">Первая</span></li>
-					<li class="page-item" v-bind:class="{disabled: nav.isDis['1']}"><span class="page-link">&laquo;</span></li>
-					<li class="page-item"
-						v-bind:class="{active: nav.isAct['0']}" v-on:click="renderPage (nav.val['0'])"><span class="page-link">{{nav.val['0']}}</span></li>
-					<li class="page-item"
-						v-bind:class="{active: nav.isAct['1']}" v-on:click="renderPage (nav.val['1'])"><span
-							class="page-link">{{nav.val['1']}}</span></li>
-					<li class="page-item"
-						v-bind:class="{active: nav.isAct['2']}" v-on:click="renderPage (nav.val['2'])"><span
-						class="page-link">{{nav.val['2']}}</span></li>
-					<li class="page-item"
-						v-bind:class="{active: nav.isAct['3']}" v-on:click="renderPage (nav.val['3'])"><span
-							class="page-link">{{nav.val['3']}}</span></li>
-					<li class="page-item"
-						v-bind:class="{active: nav.isAct['4']}" v-on:click="renderPage (nav.val['4'])"><span
-							class="page-link">{{nav.val['4']}}</span></li>
-					<li class="page-item" v-bind:class="{disabled: nav.isDis['2']}"><span class="page-link">&raquo;</span></li>
-					<li class="page-item" v-bind:class="{disabled: nav.isDis['3']}"><span class="page-link">Последняя</span></li>
-				</ul>
-			</div>
-			<button v-on:click="addToCart(shop.page[0])" style="width: 50px; height: 20px;">add</button>
+			<products3 v-bind:shop="shop"></products3>
+			<shop-nav v-bind:shop="shop" ref="shopNav"></shop-nav>
 		</div>
-		<cart3 v-bind:cart="cart"></cart3>
-		<cart4></cart4>
-		<p>Текст: {{cart.items.length}}</p>
+		<cart3 v-bind:shop="shop"></cart3>
 	</div>
 	<div class="footer">
 		<p class="footer__about-me">Работу выполнил: Калугин Василий</p>
