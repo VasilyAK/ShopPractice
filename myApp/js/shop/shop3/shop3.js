@@ -58,5 +58,5 @@ export const shop3 = SM$V.createShop({
 	productList: productList3,
 	cart: cart3,
 	search: search3,
-	productsOnPage: 4
+	productsOnPage: 5
 });

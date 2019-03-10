@@ -1,6 +1,8 @@
 import CommonMethods from './CommonMethods.js';
 import ProductList from "./ProductList.js";
+import Product from './Product.js';
 import {SM} from '../ShopMaker.js';
+import {SM$V} from '../ShopMaker.js';
 
 export default class Search extends CommonMethods {
 	constructor (options) {
@@ -9,6 +11,7 @@ export default class Search extends CommonMethods {
 			this.name = Search.newProperty(options, 'name', new Error('"name" is a required property'), 'string');
 			this.text = Search.newProperty(options, 'text', [], 'object');
 			this.map = Search.newProperty(options, 'map', [], 'object');
+			this.mod = 'VUE';
 		} else {
 			Object.defineProperties(this, {
 				'name': {
@@ -85,9 +88,11 @@ export default class Search extends CommonMethods {
 					}
 					if (countMutches > 0){
 						this.map.push({
+							id: this.map.length+1,
 							productList: productList.name,
 							productNode: i,
-							countMutches: countMutches
+							countMutches: countMutches,
+							product: new Product(productList.source[i])
 						})
 					}
 				}
@@ -95,16 +100,27 @@ export default class Search extends CommonMethods {
 		}
 	}
 
-	search () {
+	search (text) { // text необязательный параметр, нужен для vue
 		this.map = [];
-		this.setText(this.input.value);
-		for (let i in SM.shc.items){
-			if (SM.shc.items.hasOwnProperty(i)) {
-				if (SM.shc.items[i].search.name === this.name) {
-					this.ranging(SM.shc.items[i].productList);
+		if (this.mod === 'VUE') {
+			this.setText(text)
+		} else {
+			this.setText(this.input.value);
+		}
+
+		const thisSM = this.mod === 'VUE' ? SM$V : SM;
+
+		for (let i in thisSM.shc.items){
+			if (thisSM.shc.items.hasOwnProperty(i)) {
+				if (thisSM.shc.items[i].search.name === this.name) {
+					this.ranging(thisSM.shc.items[i].productList);
 				}
 			}
 		}
-		console.log(this.map);
+		if (this.mod === 'VUE') {
+			console.log(this.map);
+			return this.map
+		}
+
 	}
 }

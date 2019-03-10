@@ -61,7 +61,7 @@ export default class Cart extends CommonMethods {
 				return {
 					index: this.items.length,
 					value: new CartProduct ({
-						id: this.items.length,
+						id: this.items.length+1,
 						product: product,
 						quantity: 1,
 						mod: this.mod
@@ -79,26 +79,27 @@ export default class Cart extends CommonMethods {
 		}
 	}
 
-	removeCartProduct (position) {
+	removeCartProduct (id) {
 		for (let i in this.items){
 			if (this.items.hasOwnProperty(i)) {
-				if (this.items.hasOwnProperty(i)) {
-					if (this.items[i].position === position) {
+				if (this.items[i].id === id) {
+					if (this.mod === 'VUE') {
+						return i
+					} else {
 						this.items.splice(i,1);
-						rePos.call(this);
+						this.reId();
 						return
 					}
 				}
 			}
 		}
-		console.log (new Error(`${this.name} does not have product on position ${position}`));
+		console.log (new Error(`${this.name} does not have product with id ${id}`));
+	}
 
-		function rePos() {
-			for (let i in this.items){
-				if (this.items.hasOwnProperty(i)) {
-					this.items[i].id = parseInt(i)+1;
-				}
-			}
+	// для Vue фуркцию reId нужно вызывать после удаления элемента из корзины
+	reId () {
+		for (let i = 0; i < this.items.length; i++){
+			this.items[i].id = i+1;
 		}
 	}
 
@@ -110,19 +111,16 @@ export default class Cart extends CommonMethods {
 		try {
 			if (typeof id === 'number') {
 				for (let item in this.items) {
-					if (this.items.hasOwnProperty(item)) {
-						if (item.id === id) {
-							if (item.product[price] && typeof item.product[price] === 'number') {
-								return item.product[price] * item.quantity
-							} else {
-								throw new Error('Method "cost" must have 2 parameters: id (number) - position of product in cart, price (number) - price of product in' +
-									' cart ')
-							}
+					if (this.items.hasOwnProperty(item) && this.items[item].id === id) {
+						if (this.items[item].product[price] && typeof this.items[item].product[price] === 'number') {
+							return this.items[item].product[price] * this.items[item].quantity
+						} else {
+							throw new Error(`Type of ${price} must bu number`)
 						}
 					}
 				}
 			} else {
-				throw new Error('Method "cost" must have 2 parameters: id (number) - position of product in cart, price (number) - price of product in' +
+				throw new Error('Method "cost" must have 2 parameters: id - position of product in cart, price - price of product in' +
 					' cart ')
 			}
 		} catch (e) {
@@ -133,15 +131,18 @@ export default class Cart extends CommonMethods {
 	totalCost (price) {
 		try {
 			let result = 0;
-			for (let item in this.items) {
-				if (this.items.hasOwnProperty(item)) {
-					if (typeof item.product[price] === 'number') {
-						result += item.product[price];
-					} else {
-						throw new Error('Method "totalCost" must have parameter: price (number) - price of product in' +
-							' cart ')
+			if (typeof price === 'string') {
+				for (let item in this.items) {
+					if (this.items.hasOwnProperty(item)) {
+						if (this.items[item].product[price] && typeof this.items[item].product[price] === 'number') {
+							result += this.items[item].product[price] * this.items[item].quantity;
+						} else {
+							throw new Error(`Type of ${price} must bu number`)
+						}
 					}
 				}
+			} else {
+				throw new Error(`Method "totalCost" must have parameter: price (string) - name of product price in 'cart'`)
 			}
 			return result
 		} catch (e) {

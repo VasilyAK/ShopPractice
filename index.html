@@ -38,17 +38,18 @@
 	<div id="shop3" class="shop">
 		<div class="shop3__header">
 			<div class="shop3-header__search-block">
-				<input id="search3-input" type="text" class="shop3-header__search-input">
-				<button v-on:click="goSearch" id="search3-button" class="shop3-header__search-btn product-btn">Искать</button>
+				<input id="search3-input" type="text" class="shop3-header__search-input" placeholder=search v-model="searchText" v-on:input="goSearch(searchText)">
+				<!--<button v-on:click="goSearch" id="search3-button" class="shop3-header__search-btn product-btn">Искать</button>-->
 			</div>
-			<button id="cart3-button" class="shop3-header__btn-cart product-btn">Корзина</button>
+			<button id="cart3-button" class="shop3-header__btn-cart product-btn" v-on:click="showCart">Корзина</button>
 		</div>
 		<div id="main3" class="shop3__main">
 			<h2>Блок товаров построенный с помощью Vue</h2>
 			<products3 v-bind:shop="shop"></products3>
 			<shop-nav v-bind:shop="shop" ref="shopNav"></shop-nav>
 		</div>
-		<cart3 v-bind:shop="shop"></cart3>
+		<search3 v-bind:shop="shop" v-bind:is-search="isSearch"></search3>
+		<cart3 v-bind:shop="shop" v-bind:is-cart="isCart"></cart3>
 	</div>
 	<div class="footer">
 		<p class="footer__about-me">Работу выполнил: Калугин Василий</p>

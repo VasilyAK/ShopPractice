@@ -191,8 +191,8 @@ export default class Shop extends CommonMethods {
 			from = 1;
 			to = 5
 		}
-		if (to > Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage)){
-			to = Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage);
+		if (to > Math.ceil(this.productList.source.length / this.productsOnPage)){
+			to = Math.ceil(this.productList.source.length / this.productsOnPage);
 			from = to - 4;
 		}
 		const nav = document.createElement('div');
