@@ -42,18 +42,26 @@ export default class SMVAK extends CommonMethods {
 	createCart (options) {
 		return this.cc.createCart(new Cart({
 			name: options.name,
-			button: options.button,
+			where: options.where,
+			cartBlock: options.cartBlock,
+			emptyCartBlock: options.emptyCartBlock,
+			afterRender: options.afterRender,
+			onLoad: options.onLoad,
 			mod: this.cc.mod
-		}), this.cc.mod)
+		}))
 	}
 
 	createSearch (options) {
 		return this.sc.createSearch(new Search({
 			name: options.name,
+			where: options.where,
 			input: options.input,
-			button: options.button,
+			searchBlock: options.searchBlock,
+			emptySearchBlock: options.emptySearchBlock,
+			afterRender: options.afterRender,
+			onLoad: options.onLoad,
 			mod: this.sc.mod
-		}), this.sc.mod)
+		}))
 	}
 
 	createProductList (options) {
@@ -62,7 +70,7 @@ export default class SMVAK extends CommonMethods {
 			jsonDeclare: options.jsonDeclare,
 			url: options.url,
 			mod: this.plc.mod
-		}), this.plc.mod)
+		}))
 	}
 
 	createShop (options) {
@@ -77,7 +85,9 @@ export default class SMVAK extends CommonMethods {
 			productsOnPage: options.productsOnPage,
 			productsOnLine: options.productsOnLine,
 			productBlock: options.productBlock,
+			afterRender: options.afterRender,
+			onLoad: options.onLoad,
 			mod: this.shc.mod
-		}), this.shc.mod);
+		}));
 	}
 }

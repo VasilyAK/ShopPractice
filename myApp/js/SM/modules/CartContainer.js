@@ -28,16 +28,19 @@ export default class CartContainer extends CommonMethods { // содержит �
 		})
 	}
 
-	createCart (cart, mod) {
+	createCart (cart) {
 		if (cart instanceof Cart) {
 			if (cart.name) {
 				for (let i in this.item) {
-					if (this.item.name === cart.name) {
-						console.log(new Error (`${cart.name} is already in ${this.name}`));
-						return;
+					if (this.item.hasOwnProperty(i)) {
+						if (this.item.name === cart.name) {
+							console.log(new Error (`${cart.name} is already in ${this.name}`));
+							return;
+						}
 					}
 				}
 				this.item.push(cart);
+				cart.onLoadInit();
 				return this.item[this.item.length-1]; //функция возвращает новый созданный объект
 			} else {
 				throw new Error (`New object must have property "name"`)

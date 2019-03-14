@@ -7,7 +7,7 @@ import {SM} from '../ShopMaker.js';
 
 export default class Shop extends CommonMethods {
 	constructor (options) {
-		super();
+		super(options);
 		if (options['mod'] && options['mod'] === 'VUE') {
 			this.name = Shop.newProperty(options, 'name', new Error('"name" is necessary property'), 'string');
 			this.productList = Shop.newProperty(options, 'productList', new Error('"productList" is necessary property'), 'object', Shop.checkProductList);
@@ -101,7 +101,8 @@ export default class Shop extends CommonMethods {
 
 	render(pageNumber) {
 		this.initPage(pageNumber);
-		return this.renderPage(this.where, this.whereId, this.cart);
+		this.renderPage(this.where, this.whereId, this.cart);
+		this.afterRenderInit();
 	}
 
 	findProductDouble (product) {
@@ -133,7 +134,7 @@ export default class Shop extends CommonMethods {
 		}
 	}
 
-	renderPage (where, whereId, cart) { // whereId - идентификатор вставляемого элемента
+	renderPage (where, whereId) { // whereId - идентификатор вставляемого элемента
 		const mainProductList = document.createElement('div');
 		mainProductList.setAttribute('id', whereId);
 		mainProductList.style.border = `none`;
@@ -151,7 +152,7 @@ export default class Shop extends CommonMethods {
 				itemBlock.style.flexFlow = `row nowrap`;
 				itemBlock.style.width = `${100 / this.productsOnLine}%`;
 				// тут вставляется пользовательский блок для продукта
-				itemBlock.innerHTML = this.productBlock(pp);
+				itemBlock.innerHTML = this.productBlock(pp, index);
 
 				mainProductList.appendChild(itemBlock);
 			} else {
@@ -177,15 +178,14 @@ export default class Shop extends CommonMethods {
 		}
 		if (whereChild) {
 			where.insertBefore(mainProductList, whereChild);
-			where.insertBefore(this.createNav(whereId, this.pageNumber - 2, this.pageNumber + 2, this.pageNumber, where, cart), whereChild);
+			where.insertBefore(this.createNav(whereId, this.pageNumber - 2, this.pageNumber + 2, this.pageNumber, where), whereChild);
 		} else {
 			where.appendChild(mainProductList);
-			where.appendChild(this.createNav(whereId, this.pageNumber - 2, this.pageNumber + 2, this.pageNumber, where, cart));
+			where.appendChild(this.createNav(whereId, this.pageNumber - 2, this.pageNumber + 2, this.pageNumber, where));
 		}
-		return mainProductList;
 	}
 
-	createNav (whereId, from, to, active, where, cart) {
+	createNav (whereId, from, to, active) {
 		//навигационная панель
 		if (from < 1 ) {
 			from = 1;
@@ -222,12 +222,10 @@ export default class Shop extends CommonMethods {
 		liPrevP.textContent = '«';
 
 		liFirstP.addEventListener('click', () => {
-			this.initPage(1);
-			this.renderPage(where, whereId, cart, this.pageNumber);
+			this.render(1);
 		});
 		liPrevP.addEventListener('click', () => {
-			this.initPage(this.pageNumber-1);
-			this.renderPage(where, whereId, cart, this.pageNumber);
+			this.render(this.pageNumber-1);
 		});
 
 		liFirst.appendChild(liFirstP);
@@ -242,8 +240,7 @@ export default class Shop extends CommonMethods {
 			} else {
 				li.setAttribute('class', 'page-item');
 				li.addEventListener('click', () => {
-					this.initPage(i);
-					this.renderPage(where, whereId, cart, this.pageNumber);
+					this.render(i);
 				});
 			}
 			const liP = document.createElement('span');
@@ -275,12 +272,10 @@ export default class Shop extends CommonMethods {
 		liNextP.textContent = '»';
 
 		liLastP.addEventListener('click', () => {
-			this.initPage(Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage));
-			this.renderPage(where, whereId, cart, this.pageNumber);
+			this.render(Math.ceil(Object.keys(this.productList.source).length / this.productsOnPage));
 		});
 		liNextP.addEventListener('click', () => {
-			this.initPage(this.pageNumber+1);
-			this.renderPage(where, whereId, cart, this.pageNumber);
+			this.render(this.pageNumber+1);
 		});
 
 		liNext.appendChild(liNextP);

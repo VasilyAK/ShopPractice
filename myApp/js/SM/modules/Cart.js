@@ -1,10 +1,11 @@
 import CommonMethods from './CommonMethods.js';
 import Product from './Product.js';
 import CartProduct from './CartProduct.js';
+import {SM} from '../ShopMaker.js';
 
 export default class Cart extends CommonMethods {
 	constructor (options) {
-		super();
+		super(options);
 		if (options['mod'] && options['mod'] === 'VUE') {
 			this.name = Cart.newProperty(options, 'name', new Error('"name" is a required property'), 'string');
 			this.items = Cart.newProperty(options, 'items', [], 'object');
@@ -18,8 +19,8 @@ export default class Cart extends CommonMethods {
 					writable: false
 				},
 
-				'button': {
-					value: Cart.newProperty(options, 'button', new Error(`'button' is a required parameter`), 'object', Cart.checkWhere),
+				'where': {
+					value: Cart.newProperty(options, 'where', new Error('"where" is necessary property'), 'object', Cart.checkWhere),
 					configurable: false,
 					enumerable: true,
 					writable: false
@@ -29,8 +30,34 @@ export default class Cart extends CommonMethods {
 					value: Cart.newProperty(options, 'items', [], 'object'),
 					configurable: false,
 					enumerable: true
+				},
+
+				'cartBlock': {
+					value: Cart.newProperty(options, 'cartBlock', new Error('"cartBlock" is necessary property'), 'function'),
+					configurable: false,
+					enumerable: true,
+					writable: false
+				},
+
+				'emptyCartBlock': {
+					value: Cart.newProperty(options, 'emptyCartBlock', new Error('"emptyCartBlock" is necessary property'), 'function'),
+					configurable: false,
+					enumerable: true,
+					writable: false
 				}
 			})
+		}
+	}
+
+	getProductByIndex (index) {
+		for (let shop in SM.shc.items) {
+			if (SM.shc.items.hasOwnProperty(shop)){
+				if (SM.shc.items[shop].cart.name === this.name){
+					if (SM.shc.items[shop].page.length > 0) {
+						return SM.shc.items[shop].page[index]
+					}
+				}
+			}
 		}
 	}
 
@@ -39,7 +66,7 @@ export default class Cart extends CommonMethods {
 			for (let i in this.items) {
 				if (this.items.hasOwnProperty(i)) {
 					if (this.items[i].product.identity(product)) { // если в корзине есть товар, добавляем его колличество
-						if (this.mod = 'VUE') {
+						if (this.mod === 'VUE') {
 							return {
 								index: i,
 								value: new CartProduct ({
@@ -57,7 +84,7 @@ export default class Cart extends CommonMethods {
 					}
 				}
 			}
-			if (this.mod = 'VUE') {
+			if (this.mod === 'VUE') {
 				return {
 					index: this.items.length,
 					value: new CartProduct ({
@@ -147,6 +174,60 @@ export default class Cart extends CommonMethods {
 			return result
 		} catch (e) {
 			throw new Error(`${e.message}`)
+		}
+	}
+
+	render () {
+		this.renderCart();
+		this.afterRenderInit();
+	}
+
+	renderCart () { // whereId - идентификатор вставляемого элемента
+		if (this.items.length === 0) {
+			this.where.innerHTML = this.emptyCartBlock();
+		} else {
+			let repeat = [];
+
+			this.items.forEach((cp, index) => {
+				if (cp instanceof CartProduct){
+					this.where.innerHTML = '';
+					this.where.innerHTML = this.cartBlock(cp, index);
+					repeat.push(this.where.querySelectorAll('[repeat="cp"]'));
+				} else {
+					console.log(new Error(`${this.name}.page number ${index} has element that is not a copy of "Product"`));
+				}
+			});
+
+			let repeatFiltered = [];
+			repeat[0].forEach(()=>{
+				repeatFiltered.push([]);
+			});
+
+			for (let i = 0; i < repeat.length; i++) {
+				if (repeat[i] instanceof NodeList) {
+					for (let j = 0; j < repeat[i].length; j++) {
+						repeatFiltered[j][i] = repeat[i][j];
+					}
+				} else {
+					repeatFiltered[i] = repeat[i]
+				}
+			}
+
+			repeatFiltered.forEach((rep) => {
+				if (rep instanceof Array) {
+					let repInner = '';
+					const child = this.where.querySelector('[repeat="cp"]');
+					for(let i=0; i < rep.length; i++) {
+						rep[i].removeAttribute('repeat');
+						if (i < rep.length-1) {
+							child.parentNode.insertBefore(rep[i], child);
+
+						}
+					}
+				} else {
+					this.where.querySelector('[repeat="cp"]').innerHTML = rep;
+				}
+			});
 		}
 	}
 }

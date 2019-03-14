@@ -40,10 +40,7 @@ export default class SearchContainer extends CommonMethods { // содержит
 					}
 				}
 				this.items.push(search);
-				if (!(mod && mod === 'VUE')) {
-					search.button.addEventListener('click', search.search.bind(search));
-				}
-
+				search.onLoadInit();
 				return this.items[this.items.length-1]; //функция возвращает новый созданный объект
 			} else {
 				throw new Error (`New object must have property "name"`)

@@ -1,4 +1,4 @@
-//import {shop1} from './shop/shop1/Shop1.js';
+import {shop1} from './shop/shop1/Shop1.js';
 import {shop3} from './shop/shop3/Shop3.js';
 import {cart3Vue} from './shop/shop3/Cart3.js';
 import {products3Vue} from './shop/shop3/Products3.js';

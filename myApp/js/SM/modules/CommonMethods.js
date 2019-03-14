@@ -1,4 +1,26 @@
 export default class CommonMethods {
+	constructor (options) {
+		if (options) {
+			if (!(options['mod'] && options['mod'] === 'VUE')) {
+				Object.defineProperties(this, {
+					'afterRender': {
+						value: CommonMethods.newProperty(options, 'afterRender', [], 'object', CommonMethods.checkAfterRender),
+						configurable: false,
+						enumerable: true,
+						writable: true
+					},
+
+					'onLoad': {
+						value: CommonMethods.newProperty(options, 'onLoad', [], 'object', CommonMethods.checkOnLoad),
+						configurable: false,
+						enumerable: true,
+						writable: true
+					}
+				})
+			}
+		}
+	}
+
 	static newProperty (options, property, returnDefault, type, addVerification) { //обрабатывает свойства классов
 		if (options) {
 			if (options[property]) {
@@ -47,6 +69,40 @@ export default class CommonMethods {
 		}
 	}
 
+	static checkAfterRender (afterRender, name) {
+		try {
+			if (afterRender instanceof Array) {
+				for (let i = 0; i < afterRender.length; i++) {
+					if (typeof afterRender[i] !== "function") {
+						throw new Error(`In ${name} each of 'afterRender must be function`)
+					}
+				}
+				return afterRender;
+			} else {
+				throw new Error(`In ${name} 'afterRender' must be copy of Array`)
+			}
+		} catch (e) {
+			throw new Error(`${e.message}`);
+		}
+	}
+
+	static checkOnLoad (onLoad, name) {
+		try {
+			if (onLoad instanceof Array) {
+				for (let i = 0; i < onLoad.length; i++) {
+					if (typeof onLoad[i] !== "function") {
+						throw new Error(`In ${name} each of 'afterRender must be function`)
+					}
+				}
+				return onLoad;
+			} else {
+				throw new Error(`In ${name} 'afterRender' must be copy of Array`)
+			}
+		} catch (e) {
+			throw new Error(`${e.message}`);
+		}
+	}
+
 	identity (obj){ // метод сравнивает объекты по их свойствам, причем соответствующим одному уровню вложения + по конструкторам
 		function identCircle (obj1, obj2, level1, level2){
 			if (typeof obj1 === 'object'){
@@ -80,4 +136,20 @@ export default class CommonMethods {
 		}
 		return identCircle(this, obj, 0, 0) && identCircle(obj, this, 0, 0) && this.constructor === obj.constructor
 	} // пришлось выкручиваться так, потому что в задании нет пункта id товара, хотя он есть в передаваемом json
+
+	afterRenderInit () {
+		if (this.afterRender) {
+			for (let i = 0; i < this.afterRender.length; i++) {
+				this.afterRender[i].call(this);
+			}
+		}
+	}
+
+	onLoadInit () {
+		if (this.onLoad) {
+			for (let i = 0; i < this.onLoad.length; i++) {
+				this.onLoad[i].call(this);
+			}
+		}
+	}
 }

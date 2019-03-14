@@ -32,9 +32,11 @@ export default class ProductListContainer extends CommonMethods { // содер�
 		if (productList instanceof ProductList) {
 			if (productList.name) {
 				for (let i in this.items) {
-					if (this.items.name === productList.name) {
-						console.log(new Error (`${productList.name} is already in ${this.name}`));
-						return;
+					if (this.items.hasOwnProperty(i)) {
+						if (this.items.name === productList.name) {
+							console.log(new Error (`${productList.name} is already in ${this.name}`));
+							return;
+						}
 					}
 				}
 				this.items.push(productList);

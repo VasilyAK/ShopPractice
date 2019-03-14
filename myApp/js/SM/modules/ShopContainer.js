@@ -41,16 +41,22 @@ export default class ShopContainer extends CommonMethods { // содержит �
 				}
 				this.items.push(shop);
 
-				return shop.productList.fetchSource(shop.productList.url)
+				const newShop = (shop.productList.fetchSource(shop.productList.url)
 					.then(() => {
-						if (mod && mod === 'VUE') {
+						if (this.mod && this.mod === 'VUE') {
 							shop.initPage(shop.pageNumber)
 						} else {
-							shop.render(shop.pageNumber)
+							shop.render(shop.pageNumber);
+							shop.onLoadInit()
 						}
 						return this.items[this.items.length-1]; //функция возвращает новый созданный объект
-					});
+					}));
 
+				if (this.mod === 'VUE') {
+					return newShop
+				} else {
+					return this.items[this.items.length-1]
+				}
 			} else {
 				throw new Error (`New object must have property "name"`)
 			}
