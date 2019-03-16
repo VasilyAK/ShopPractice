@@ -1,10 +1,13 @@
-/* общие стили */
+@import 'shop1/shop1';
+@import 'shop3/shop3';
+
 * {
 	margin: 0;
 	padding: 0;
-	outline: none!important;
+	outline: none;
 }
 
+// общие стили
 .product-btn {
 	background: none;
 	border: 1px solid rgb(155, 155, 155);
@@ -24,7 +27,7 @@
 	box-shadow: inset 0 0 1px 1px rgb(155, 155, 155);
 }
 
-/* стили блоков */
+// стили блоков
 body {
 	height: 100vh;
 }
